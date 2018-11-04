@@ -1,0 +1,61 @@
+{% extends 'chat/base.html' %}
+
+{% block content %}
+<div class="container">
+	<div class="text-center">
+			<h1>Welcome to room {{room}}</h1>
+			<p>Type your message below</p>
+			<form method='post' id='form'>
+				{% csrf_token %}
+				<input type="text" id="chat-textbox" class="form-control" />
+				<input type="submit" value="Submit" />
+			</form>
+			<ul>
+				{% for msg in messages %}
+					<li>{{msg.message}}</li>
+				{% endfor %}
+			</ul>
+	</div>
+</div>
+{% endblock %}
+
+{% block script %}
+    <script>
+        console.log(window.location)
+        var loc = window.location
+        var formData = document.getElementById('form')
+        var inputBox = document.getElementById('chat-textbox')
+
+        var wsStart = "ws://"
+        if (loc.protocol == 'https:') {
+            wsStart = 'wss://'
+        }
+
+        var endpoint = wsStart + window.location.host + window.location.pathname;
+
+        var socket = new WebSocket(endpoint)
+
+        socket.onmessage = (e) => {
+            console.log("message", e)
+        }
+        socket.onopen = (e) => {
+            console.log("open", e)
+            formData.addEventListener("submit", (event) => {
+            	event.preventDefault();
+            	var newMsg = {'message':inputBox.value}
+
+            	socket.send(JSON.stringify(newMsg))
+
+            	formData.reset()
+            })
+        }
+
+        socket.onerror = (e) => {
+            console.log("error", e)
+        }
+        socket.onclose = (e) => {
+            console.log("close", e)
+        }
+    </script>
+
+{% endblock %}

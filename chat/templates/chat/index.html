@@ -1,0 +1,20 @@
+{% extends 'chat/base.html' %}
+
+{% block content %}
+<div class="container">
+	<script>
+		function gotoroom() {
+			var roomname = $('#roomname').val();
+			console.log(roomname)
+			var getLink = '/chat/' + roomname;
+			window.location.replace(getLink)
+		}
+	</script>
+	<div class="text-center">
+			<h1>Welcome</h1>
+			<p>Which room would you like to go to?</p>
+			<input type="text" name="chat-textbox" id='roomname' class="form-control" />
+			<button class='btn btn-lg btn-success' onclick='gotoroom()'>Go!</button>
+	</div>
+</div>
+{% endblock %}
