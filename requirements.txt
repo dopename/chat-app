@@ -1,3 +1,4 @@
 channels==2.1.5
 channels-redis==2.3.1
 django==2.1.2
+pywin32==224
