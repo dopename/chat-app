@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from channels.consumer import AsyncConsumer
 from channels.db import database_sync_to_async
 from django.core import serializers
+import datetime
 
 from .models import *
 #MEssage, Thread
@@ -47,7 +48,8 @@ class ChatConsumer(AsyncConsumer):
 
 			myResponse = {
 				'message':msg,
-				'username': username
+				'username': username,
+				'timestamp':str(datetime.datetime.time(datetime.datetime.now()))[:8]
 			}
 
 			success = await self.create_chat_message(user=chat_user, message=msg, room=Room.objects.get(room_name=self.chat_room.split('_')[-1]))

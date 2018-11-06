@@ -10,9 +10,27 @@
 				<input type="text" id="chat-textbox" class="form-control" />
 				<input type="submit" value="Submit" />
 			</form>
-			<ul>
+			<ul id="chat-list">
 				{% for msg in messages %}
-					<li>{{msg.message}}</li>
+                    {% if msg.user.user.username == request.user.username %}
+                        <li class="row">
+                            <div class="col-8 d-flex flex-column">
+                                <p class="alert alert-success m-0">{{msg.message}} via {{msg.user.chat_name}}</p>
+                                <p>{{msg.timestamp}}</p>
+                            </div>
+                            <div class="col-4">
+                            </div>
+                        </li>
+                    {% else %}
+                        <li class="row">
+                            <div class="col-4">
+                            </div>
+                            <div class="col-8 d-flex flex-column">
+                                <p class="alert alert-primary m-0">{{msg.message}} via {{msg.user.chat_name}}</p>
+                                <p>{{msg.timestamp}}</p>
+                            </div>
+                        </li>
+                    {% endif %}
 				{% endfor %}
 			</ul>
 	</div>
@@ -25,7 +43,10 @@
         var loc = window.location
         var formData = document.getElementById('form')
         var inputBox = document.getElementById('chat-textbox')
+        const username = '{{request.user.username}}'
 
+        var chatList = document.getElementById('chat-list')
+        console.log(chatList)
         var wsStart = "ws://"
         if (loc.protocol == 'https:') {
             wsStart = 'wss://'
@@ -37,6 +58,37 @@
 
         socket.onmessage = (e) => {
             console.log("message", e)
+            var node = document.createElement("li"); //create row
+            node.classList.add('row')
+
+            var jsonFixed = JSON.parse(e.data); //parse the json returned
+            var newText = document.createTextNode(jsonFixed.message + " via " + jsonFixed.username); //create text element from json
+
+            var textDiv = document.createElement("div"); //create big box according to whatever
+            textDiv.classList.add('col-8'); //apply the 75% width
+            textDiv.appendChild(newText); //add the text element into 75% node
+
+            var emptyDiv = document.createElement("div"); //create 25% node
+            emptyDiv.classList.add('col-4');
+
+            textDiv.classList.add('alert')
+
+            if (jsonFixed.username === username) {
+                textDiv.classList.add('alert-success')
+                textDiv.appendChild(newText); //add the text element into 75% node
+                node.classList.add('this-user')
+                node.appendChild(textDiv);
+                node.appendChild(emptyDiv)
+            }
+            else {
+                textDiv.classList.add('alert-primary')
+                textDiv.appendChild(newText);
+                node.classList.add('other-user')
+                node.appendChild(emptyDiv);
+                node.appendChild(textDiv);
+            }
+
+            chatList.appendChild(node)
         }
         socket.onopen = (e) => {
             console.log("open", e)
