@@ -13,6 +13,7 @@ class Room(models.Model):
 class RoomSubscription(models.Model):
 	chat_user = models.ForeignKey(ChatUser, on_delete=models.CASCADE)
 	room = models.ForeignKey(Room, on_delete=models.CASCADE)
+	active = models.BooleanField(default=False)
 
 class ChatMessage(models.Model):
 	user = models.ForeignKey(ChatUser, on_delete=models.CASCADE)
