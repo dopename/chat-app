@@ -20,7 +20,7 @@ def chat(request, room):
 
 	return render(request, template_name, {'room':room, 'messages':messages})
 
-def login(request):
+def user_login(request):
 	template_name = 'chat/login.html'
 
 	username = request.POST.get('username')
