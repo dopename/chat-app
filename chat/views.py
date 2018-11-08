@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import * 
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 
 def home(request):
 	template_name = 'chat/index.html'
@@ -10,6 +11,7 @@ def home(request):
 		available_rooms = Room.objects.all()
 		return render(request, template_name, {'rooms':available_rooms})
 
+@login_required
 def chat(request, room):
 	template_name = 'chat/chat.html'
 	chat_room = None

@@ -9,6 +9,53 @@ import datetime
 from .models import *
 #MEssage, Thread
 
+class GlobalConsumer(AsyncConsumer):
+
+	async def websocket_connect(self, event):
+		
+		self.room_name = 'online'
+
+		user = self.scopr['user']
+
+		if user.is_authenticated:
+			self.user = self.scope['user']
+
+			await self.login_user(user)
+
+			await self.channel_layer.group_add(
+				self.room_name, 
+				self.channel_name
+			)
+
+			await self.send({
+				"type":"websocket.accept",
+				"text":f"Total logged in: {self.count_current_users()}"
+			})
+
+	async def websocket_receive(self, event):
+		pass
+
+	async def websocket_disconnect(self, event):
+		await self.logout_user(self.user)
+
+		await self.channel_layer.group_discard(
+			self.room_name,
+			self.channel_name
+		)
+
+	@database_sync_to_async
+	def login_user(self, user):
+		user.ChatUser.update(logged_in=True)
+
+	@database_sync_to_async
+	def logout_user(self, user):
+		user.ChatUser.update(logged_in=False)
+
+	@database_sync_to_async
+	def count_current_users(self):
+		return len(ChatUser.objects.filter(logged_in=True))
+
+
 class ChatConsumer(AsyncConsumer):
 	async def websocket_connect(self, event):
 		print("connected", event)
@@ -73,6 +120,12 @@ class ChatConsumer(AsyncConsumer):
 
 	async def websocket_disconnect(self, event):
 		print("disconnected", event)
+
+		await self.channel_layer.group_discard(
+			self.chat_room,
+			self.channel_name
+		)
+
 
 	@database_sync_to_async
 	def get_room(self, roomname, user):
