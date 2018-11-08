@@ -38,6 +38,10 @@
 <script>
 	var windowHeightPx = (window.screen.height * 0.50).toString() + "px";
 	document.getElementById('chat-window').style.height = windowHeightPx;
+
+	window.onload = function() {
+		window.scrollTo(0,document.getElementById("chat-window").scrollHeight);
+	}
 </script>
 {% endblock %}
 
