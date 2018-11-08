@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login
 from .models import * 
 
 def home(request):
@@ -30,5 +30,7 @@ def user_login(request):
 		password = request.POST.get('password')
 
 		user = authenticate(request=request, username=username, password=password)
-
-		return render(request, 'chat/index.html')
+		if user:
+			if user.is_active
+				login(request, user)
+				return render(request, 'chat/index.html')
