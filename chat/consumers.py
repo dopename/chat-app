@@ -46,6 +46,14 @@ class GlobalConsumer(AsyncConsumer):
 	async def websocket_disconnect(self, event):
 		await self.logout_user(self.user)
 
+		await self.channel_layer.group_send(
+			self.room_name,
+			{
+				'type':'online_update',
+				'text':json.dumps({'users':await self.count_current_users()})
+			}
+		)
+
 		await self.channel_layer.group_discard(
 			self.room_name,
 			self.channel_name

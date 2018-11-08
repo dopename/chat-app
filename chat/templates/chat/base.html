@@ -58,7 +58,10 @@
                         var socket = new WebSocket(endpoint)
 
                         socket.onmessage = (e) => {
-                              console.log("message", e)
+                              console.log("message", e);
+                              var updateDiv = document.getElementById('online-users');
+                              var parsedData = JSON.parse(e.data);
+                              updateDiv.innerHtml = parsedData.users;
                         }
                         socket.onopen = (e) => {
                               console.log("open", e)
@@ -79,6 +82,9 @@
                   {% else %}
                         <a class='ml-auto mr-2' href='/login'>Login</a>
                   {% endif %}
+            </div>
+            <div class=text-center">
+                  <h3>Total users online: <span class="badge badge-success" id="online-users">0</span></h3>
             </div>
 		{% block content %}
 		{% endblock %}
