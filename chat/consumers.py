@@ -29,7 +29,7 @@ class GlobalConsumer(AsyncConsumer):
 
 			await self.send({
 				"type":"websocket.accept",
-				"text":f"Total logged in: {self.count_current_users()}"
+				"text":"Total logged in: {}".format(self.count_current_users())
 			})
 
 	async def websocket_receive(self, event):
