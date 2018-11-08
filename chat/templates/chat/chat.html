@@ -38,8 +38,9 @@
 <script>
 	var scrollWindow = () => {
 		var windowHeightPx = (window.screen.height * 0.50).toString() + "px";
-		document.getElementById('chat-window').style.height = windowHeightPx;
-		window.scrollTo(0,document.getElementById("chat-window").scrollHeight);
+		var chatBox = document.getElementById('chat-window')
+		chatBox.style.height = windowHeightPx;
+		chatBox.scrollTop = chatBox.scrollHeight;
 	}
 
 	scrollWindow();
