@@ -9,7 +9,7 @@
 		<input type="text" id="chat-textbox" class="form-control" />
 		<input type="submit" value="Submit" class='btn' />
 	</form>
-	<div class="container h-50 mt-5" style="overflow-y:auto">
+	<div class="container mt-5" id='chat-window' style="overflow-y:auto;">
 		<ul id="chat-list">
 			{% for msg in messages %}
 				{% if msg.user.user.username == request.user.username %}
@@ -35,6 +35,10 @@
 		</ul>
 	</div>
 </div>
+<script>
+	var windowHeightPx = (window.screen.height * 0.50).toString() + "px";
+	document.getElementById('chat-window').style.height = windowHeightPx;
+</script>
 {% endblock %}
 
 {% block script %}
