@@ -61,7 +61,7 @@
                               console.log("message", e);
                               var updateDiv = document.getElementById('online-users');
                               var parsedData = JSON.parse(e.data);
-                              updateDiv.innerHtml = parsedData.users;
+                              updateDiv.innerHTML = parsedData.users;
                         }
                         socket.onopen = (e) => {
                               console.log("open", e)
