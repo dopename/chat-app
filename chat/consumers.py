@@ -15,7 +15,7 @@ class GlobalConsumer(AsyncConsumer):
 		
 		self.room_name = 'online'
 
-		user = self.scopr['user']
+		user = self.scope['user']
 
 		if user.is_authenticated:
 			self.user = self.scope['user']
