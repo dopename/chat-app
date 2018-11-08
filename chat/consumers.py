@@ -48,13 +48,13 @@ class GlobalConsumer(AsyncConsumer):
 	def login_user(self, user):
 		chat_user = ChatUser.objects.get(user=user.id)
 		chat_user.logged_in = True
-		ChatUser.save(update_fields=['logged_in'])
+		chat_user.save(update_fields=['logged_in'])
 
 	@database_sync_to_async
 	def logout_user(self, user):
 		chat_user = ChatUser.objects.get(user=user.id)
 		chat_user.logged_in = False
-		ChatUser.save(update_fields=['logged_in'])
+		chat_user.save(update_fields=['logged_in'])
 
 	@database_sync_to_async
 	def count_current_users(self):
