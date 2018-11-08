@@ -23,9 +23,12 @@ def chat(request, room):
 def user_login(request):
 	template_name = 'chat/login.html'
 
-	username = request.POST.get('username')
-	password = request.POST.get('password')
+	if request.method == 'GET':
+		return render(request, template_name)
+	else:
+		username = request.POST.get('username')
+		password = request.POST.get('password')
 
-	user = authenticate(username=username, password=password)
+		user = authenticate(username=username, password=password)
 
-	return render(request, 'chat/index.html')
+		return render(request, 'chat/index.html')
