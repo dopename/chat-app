@@ -4,6 +4,7 @@
 
 <div class='jumbotron'>
 	<form action='' method='post'>
+		{% csrf_token %}
 		<label>
 			Username
 			<input name='username' type='text' class='form-control' />
