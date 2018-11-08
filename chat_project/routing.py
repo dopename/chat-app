@@ -10,8 +10,8 @@ application = ProtocolTypeRouter({
 		AuthMiddlewareStack(
 			URLRouter(
 				[
-					url(r"^/$", GlobalConsumer),
 					url(r"^chat/(?P<room_name>[\w.@+-]+)/$", ChatConsumer),
+					url(r"^$", GlobalConsumer),
 				]
 			)
 
