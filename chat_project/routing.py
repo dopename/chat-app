@@ -3,7 +3,7 @@ from channels.routing import ProtocolTypeRouter, URLRouter
 from django.conf.urls import url
 from channels.security.websocket import AllowedHostsOriginValidator, OriginValidator
 
-from chat.consumers import ChatConsumer
+from chat.consumers import ChatConsumer, GlobalConsumer
 
 application = ProtocolTypeRouter({
 	'websocket': AllowedHostsOriginValidator(
