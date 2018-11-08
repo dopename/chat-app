@@ -3,8 +3,7 @@
 {% block content %}
 <div class="container">
 	<script>
-		function gotoroom(e) {
-			e.preventDefault();
+		function gotoroom() {
 			var roomname = $('#roomname').val();
 			console.log(roomname)
 			var getLink = '/chat/' + roomname;
@@ -15,7 +14,7 @@
 			<h1>Welcome</h1>
 			<p>Which room would you like to go to?</p>
 			<input type="text" name="chat-textbox" id='roomname' class="form-control" />
-			<input class='btn btn-lg btn-success my-2' type="submit" value="Go" onclick='(e) => gotoroom(e)' />
+			<button class='btn btn-lg btn-success my-2' onclick='gotoroom()'>Go!</button>
 	</div>
 </div>
 {% endblock %}
