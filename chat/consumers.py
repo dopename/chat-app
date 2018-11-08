@@ -92,7 +92,9 @@ class ChatConsumer(AsyncConsumer):
 
 		connected_room = await self.get_room(room_url, me)
 
-		chat_room = 'chatroom_{}'.format(connected_room.room.room_name)
+		connected_room_name = connected_room.room.room_name
+
+		chat_room = 'chatroom_{}'.format(connected_room_name)
 		self.chat_room = chat_room
 
 		await self.channel_layer.group_add(
@@ -108,7 +110,7 @@ class ChatConsumer(AsyncConsumer):
 			self.room_name,
 			{
 				'type':'room_update',
-				'text':json.dumps({self.chat_room.split('_')[-1]: await self.users_per_room(connected_room.room.room_name)})
+				'text':json.dumps({self.chat_room.split('_')[-1]: await self.users_per_room(connected_room_name)})
 			}
 		)
 
@@ -144,6 +146,13 @@ class ChatConsumer(AsyncConsumer):
 			)
 		else: 
 			print("lol")
+
+
+	async def room_update(self, event):
+		await self.send({
+				'type':'websocket.send',
+				'text':event['text']
+			})
 
 	async def chat_message(self, event):
 		print('message', event)
