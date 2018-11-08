@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib.auth import authenticate
 from .models import * 
 
 def home(request):
@@ -18,3 +19,13 @@ def chat(request, room):
 		print('sucks')
 
 	return render(request, template_name, {'room':room, 'messages':messages})
+
+def login(request):
+	template_name = 'chat/login.html'
+
+	username = request.POST.get('username')
+	password = request.POST.get('password')
+
+	user = authenticate(username=username, password=password)
+
+	return render(request, 'chat/index.html')

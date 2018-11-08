@@ -25,7 +25,14 @@
       </style>
 	</head>
 	<body>
-		<p class='m-2'>Welcome back {{request.user.username}}</p>
+            <div class='d-flex flex-row'>
+                  {% if request.user %}
+                        <p class='ml-auto mr-2'>Welcome back {{request.user.username}}</p>
+                  {% else %}
+                        <a class='ml-auto mr-2' href='/login'>Login</a>
+                  {% endif %}
+                  }
+            </div>
 		{% block content %}
 		{% endblock %}
 		{% block script %}
