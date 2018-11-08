@@ -10,29 +10,31 @@
 				<input type="text" id="chat-textbox" class="form-control" />
 				<input type="submit" value="Submit" class='btn' />
 			</form>
-			<ul id="chat-list" class='mt-5 container h-50' style="overflow-y:auto;">
-				{% for msg in messages %}
-                    {% if msg.user.user.username == request.user.username %}
-                        <li class="row">
-                            <div class="col-8 d-flex flex-column">
-                                <p class="alert alert-success m-0">{{msg.message}} via {{msg.user.chat_name}}</p>
-                                <p>{{msg.timestamp}}</p>
-                            </div>
-                            <div class="col-4">
-                            </div>
-                        </li>
-                    {% else %}
-                        <li class="row">
-                            <div class="col-4">
-                            </div>
-                            <div class="col-8 d-flex flex-column">
-                                <p class="alert alert-primary m-0">{{msg.message}} via {{msg.user.chat_name}}</p>
-                                <p>{{msg.timestamp}}</p>
-                            </div>
-                        </li>
-                    {% endif %}
-				{% endfor %}
-			</ul>
+            <div class="container h-50 mt-5" style="overflow-y:auto">
+    			<ul id="chat-list">
+    				{% for msg in messages %}
+                        {% if msg.user.user.username == request.user.username %}
+                            <li class="row">
+                                <div class="col-8 d-flex flex-column">
+                                    <p class="alert alert-success m-0">{{msg.message}} via {{msg.user.chat_name}}</p>
+                                    <p>{{msg.timestamp}}</p>
+                                </div>
+                                <div class="col-4">
+                                </div>
+                            </li>
+                        {% else %}
+                            <li class="row">
+                                <div class="col-4">
+                                </div>
+                                <div class="col-8 d-flex flex-column">
+                                    <p class="alert alert-primary m-0">{{msg.message}} via {{msg.user.chat_name}}</p>
+                                    <p>{{msg.timestamp}}</p>
+                                </div>
+                            </li>
+                        {% endif %}
+    				{% endfor %}
+    			</ul>
+            </div>
 	</div>
 </div>
 {% endblock %}
