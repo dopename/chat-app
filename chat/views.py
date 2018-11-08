@@ -54,8 +54,8 @@ def register(request):
 			user = User.objects.create_user(username=username, password=password)
 			ChatUser.objects.create(chat_name=username, user=user)
 
-			HttpResponseRedirect('/')
+			return HttpResponseRedirect('/')
 		else:
-			HttpResponse('That username is already taken')
+			return HttpResponse('That username is already taken')
 	else:
 		return render(request, 'chat/register.html')
