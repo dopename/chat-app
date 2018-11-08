@@ -30,8 +30,15 @@ class GlobalConsumer(AsyncConsumer):
 
 			await self.send({
 				"type":"websocket.accept",
-				"text":"Total logged in: {}".format(await self.count_current_users())
 			})
+
+			await self.channel_layer.group_send(
+				self.room_name,
+				{
+					'type':'online_update',
+					'text':json.dumps({'users':await self.count_current_users()})
+				}
+			)
 
 	async def websocket_receive(self, event):
 		print("receive", event)
@@ -43,6 +50,12 @@ class GlobalConsumer(AsyncConsumer):
 			self.room_name,
 			self.channel_name
 		)
+
+	async def online_update(self, event):
+		await self.send({
+				'type':'websocket.send',
+				'text':event['text']
+			})
 
 	@database_sync_to_async
 	def login_user(self, user):
