@@ -104,13 +104,13 @@ class ChatConsumer(AsyncConsumer):
 			"type":"websocket.accept"
 		})
 
-		# await self.channel_layer.group_send(
-		# 	self.room_name,
-		# 	{
-		# 		'type':'room_update',
-		# 		'text':json.dumps({'users':await self.count_current_users()})
-		# 	}
-		# )
+		await self.channel_layer.group_send(
+			self.room_name,
+			{
+				'type':'room_update',
+				'text':json.dumps({self.chat_room.split('_')[-1]: await self.users_per_room(connected_room.room.room_name)})
+			}
+		)
 
 	async def websocket_receive(self, event):
 		print("receive", event)
@@ -160,6 +160,9 @@ class ChatConsumer(AsyncConsumer):
 			self.channel_name
 		)
 
+	@database_sync_to_async
+	def users_per_room(self, roomname):
+		return len(RoomSubscription.objects.filter(active=True, room__room_name=roomname))
 
 	@database_sync_to_async
 	def get_room(self, roomname, user):
