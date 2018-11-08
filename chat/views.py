@@ -29,6 +29,6 @@ def user_login(request):
 		username = request.POST.get('username')
 		password = request.POST.get('password')
 
-		user = authenticate(username=username, password=password)
+		user = authenticate(request=request, username=username, password=password)
 
 		return render(request, 'chat/index.html')
