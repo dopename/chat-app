@@ -11,7 +11,7 @@ application = ProtocolTypeRouter({
 			URLRouter(
 				[
 					url(r"^chat/(?P<room_name>[\w.@+-]+)/$", ChatConsumer),
-					url(r"^/$", GlobalConsumer),
+					url(r"^logged_in/$", GlobalConsumer),
 				]
 			)
 
