@@ -19,7 +19,7 @@ class GlobalConsumer(AsyncConsumer):
 		user = self.scope['user']
 
 		if user.is_authenticated:
-			# self.user = self.scope['user']
+			self.user = self.scope['user']
 
 			await self.login_user(user)
 
