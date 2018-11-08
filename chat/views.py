@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import * 
+from django.contrib.auth.models import User
 
 def home(request):
 	if request.method == 'GET':
@@ -43,3 +44,18 @@ def user_login(request):
 def user_logout(request):
 	logout(request)
 	return redirect('/') 
+
+def register(request):
+	if request.method == 'POST':
+		username = request.POST.get('username')
+		password = request.POST.get('password')
+
+		if len(User.objects.filter(username=username)) < 1:
+			user = User.objects.create_user(username=username, password=password)
+			ChatUser.objects.create(chat_name=username, user=user)
+
+			HttpResponseRedirect('/')
+		else:
+			HttpResponse('That username is already taken')
+	else:
+		return render(request, 'chat/register.html')
