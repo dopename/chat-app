@@ -20,17 +20,25 @@ def chat(request, room):
 
 	return render(request, template_name, {'room':room, 'messages':messages})
 
+
 def user_login(request):
-	template_name = 'chat/login.html'
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
 
-	if request.method == 'GET':
-		return render(request, template_name)
-	else:
-		username = request.POST.get('username')
-		password = request.POST.get('password')
-
-		user = authenticate(request=request, username=username, password=password)
-		if user:
-			if user.is_active
-				login(request, user)
-				return render(request, 'chat/index.html')
+        user = authenticate(request=request, username=username, password=password)
+        if user:
+            if user.is_active:
+                login(request, user)
+                return HttpResponseRedirect('/')
+            else:
+                return HttpResponse("Your account is disabled.")
+        else:
+            print("Invalid login details: {0}, {1}".format(username, password))
+            return HttpResponse("Invalid login details supplied.")
+    else:
+        return render(request, 'chat/login.html', {})
+		
+def user_logout(request):
+	logout(request)
+	return redirect('/') 

@@ -1,5 +1,6 @@
 from django.urls import path
 import chat.views as views
+
 app_name = 'chat'
 
 urlpatterns = [
