@@ -4,7 +4,7 @@
 	<head>
 	<meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-      <title>MariniBank</title>
+      <title>NicksChat</title>
       <!-- <link rel="shortcut icon" type="image/x-icon" href="/media/aoclogo.ico" /> -->
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -26,7 +26,7 @@
 	</head>
 	<body>
             <div class='d-flex flex-row'>
-                  {% if request.user.username %}
+                  {% if request.user.is_authenticated %}
                         <p class='ml-auto mr-2'>Welcome back {{request.user.username}}</p>
                   {% else %}
                         <a class='ml-auto mr-2' href='/login'>Login</a>
