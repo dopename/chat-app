@@ -5,9 +5,10 @@ from .models import *
 from django.contrib.auth.models import User
 
 def home(request):
+	template_name = 'chat/index.html'
 	if request.method == 'GET':
-		template_name = 'chat/index.html'
-		return render(request, template_name)
+		available_rooms = Room.objects.all()
+		return render(request, template_name, {'rooms':available_rooms})
 
 def chat(request, room):
 	template_name = 'chat/chat.html'
