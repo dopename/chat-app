@@ -7,4 +7,5 @@ urlpatterns = [
 	path('', views.home),
 	path('chat/<str:room>/', views.chat, name='chat'),
 	path('login/', views.user_login),
+	path('register/', views.register),
 ]
