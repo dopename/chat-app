@@ -178,6 +178,9 @@ class ChatConsumer(AsyncConsumer):
 	async def websocket_disconnect(self, event):
 		print("disconnected", event)
 
+		await self.send({
+				'type':'websocket.disconnect',
+			})
 
 		await self.channel_layer.group_send(
 			'online',
