@@ -116,7 +116,7 @@ class ChatConsumer(AsyncConsumer):
 			self.chat_room,
 			{
 				'type':'room_update',
-				'text':json.dumps({self.chat_room.split('_')[-1]: await self.users_per_room(connected_room_name)})
+				'text':json.dumps({'channel':{self.chat_room.split('_')[-1]: await self.users_per_room(connected_room_name)}})
 			}
 		)
 
@@ -189,7 +189,6 @@ class ChatConsumer(AsyncConsumer):
 
 	@database_sync_to_async
 	def get_room(self, roomname, user):
-		print('Hit this funciton')
 		return_room = None
 		room = None
 		try:

@@ -64,6 +64,11 @@
                               if (parsedData.users !== undefined) {
                                     updateDiv.innerHTML = parsedData.users;
                               }
+                              if (parsedData.channel !== undefined) {
+                                    var updateKey = Object.keys(parsedData.channel)[0]
+                                    var toUpdate = document.getElementById(updateKey);
+                                    toUpdate.appendChild("<span class='badge badge-primary'>" + parsedData.channel[updateKey] + "</span>")
+                              }
                         }
                         socket.onopen = (e) => {
                               console.log("open", e)

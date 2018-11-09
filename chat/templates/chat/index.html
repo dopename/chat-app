@@ -28,7 +28,7 @@
 			<p class="lead">Join an existing room</p>
 			<select class='form-control' id='join-room'>
 				{% for room in rooms %}
-					<option value={{room.room_name}}>{{room.room_name}}</option>
+					<option value={{room.room_name}} id={{room.room_name}}>{{room.room_name}}</option>
 				{% endfor %}
 			</select>
 			<button class="btn btn-lg btn-primary my-2" onclick='joinroom()'>Join</button>
