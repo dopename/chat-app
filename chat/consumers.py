@@ -40,6 +40,12 @@ class GlobalConsumer(AsyncConsumer):
 				}
 			)
 
+	async def room_update(self, event):
+		await self.send({
+				'type':'websocket.send',
+				'text':event['text']
+			})
+
 	async def websocket_receive(self, event):
 		print("receive", event)
 
