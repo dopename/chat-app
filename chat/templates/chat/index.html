@@ -28,7 +28,7 @@
 				{% for room in rooms %}
 					<div class='col-md-4 my-2 d-flex flex-column'>
 						<p class='lead'>{{room.room_name}}</p>
-						<span class='my-1 mx-3' id='badge_{{room.room_name}}' class='badge badge-primary'>0</span>
+						<span class='my-1 mx-auto w-50' id='badge_{{room.room_name}}' class='badge badge-primary'>0</span>
 						<button class='btn btn-success' onclick='joinroom({{room.room_name}})'>Join</button>
 					</div>
 				{% endfor %}
