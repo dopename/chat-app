@@ -68,11 +68,8 @@
                                     var updateKey = Object.keys(parsedData.channel)[0]
                                     var toUpdate = document.getElementById(updateKey);
                                     console.log(updateKey, parsedData.channel[updateKey])
-                                    var span = document.createElement('span')
-                                    span.classList.add('badge')
-                                    span.classList.add('badge-primary')
-                                    span.appendChild(document.createTextNode(parsedData.channel[updateKey]))
-                                    toUpdate.innerHTML += span
+                              
+                                    toUpdate.innerHTML += "<span class='badge badge-primary'>" + parsedData.channel[updateKey] + "</span>"
                               }
                         }
                         socket.onopen = (e) => {
