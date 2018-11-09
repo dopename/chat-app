@@ -66,10 +66,10 @@
                               }
                               if (parsedData.channel !== undefined) {
                                     var updateKey = Object.keys(parsedData.channel)[0]
-                                    var toUpdate = document.getElementById(updateKey);
+                                    var toUpdate = document.getElementById('badge_' + updateKey);
                                     console.log(updateKey, parsedData.channel[updateKey])
                               
-                                    toUpdate.innerHTML += "<span class='badge badge-primary'>" + parsedData.channel[updateKey] + "</span>"
+                                    toUpdate.innerHTML = parsedData.channel[updateKey];
                               }
                         }
                         socket.onopen = (e) => {

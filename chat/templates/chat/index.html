@@ -10,10 +10,9 @@
 			window.location.replace(getLink)
 		}
 
-		function joinroom() {
-			var roomname = $('#join-room option:selected').val();
+		function joinroom(link) {
 			console.log(roomname)
-			var getLink = '/chat/' + roomname;
+			var getLink = '/chat/' + link;
 			window.location.replace(getLink)
 		}
 	</script>
@@ -26,12 +25,15 @@
 		</div>
 		<div class="col-md-6 text-center">
 			<p class="lead">Join an existing room</p>
-			<select class='form-control' id='join-room'>
+			<div class='d-flex flex-row flex-wrap'>
 				{% for room in rooms %}
-					<option value={{room.room_name}} id={{room.room_name}}>{{room.room_name}}</option>
+					<div class='col-md-4 my-2'>
+						{{room.room_name}}
+						<span id='badge_{{room.room_name}}' class='badge badge-success'>0</span>
+						<button class='btn btn-success' onclick='joinroom({{room.room_name}})'>Join</button>
+					</div>
 				{% endfor %}
-			</select>
-			<button class="btn btn-lg btn-primary my-2" onclick='joinroom()'>Join</button>
+			</div>
 		</div>
 	</div>
 </div>
