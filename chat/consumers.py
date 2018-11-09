@@ -81,7 +81,7 @@ class GlobalConsumer(AsyncConsumer):
 			self.channel_name
 		)
 
-	async def global_user_update(self, event):
+	async def rooom_user_update(self, event):
 		await self.send({
 				'type':WEBSOCKET_SEND,
 				'text':event['text']
