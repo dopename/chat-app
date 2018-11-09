@@ -188,7 +188,7 @@ class ChatConsumer(AsyncConsumer):
 		else:
 			return_room = RoomSubscription.objects.filter(chat_user=user.chat_user.id, room=int(room.id))[0]
 			return_room.active = True
-			return_room.save(update_fields=[active])
+			return_room.save(update_fields=['active'])
 
 		return return_room
 
