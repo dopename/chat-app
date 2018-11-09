@@ -112,19 +112,19 @@ class ChatConsumer(AsyncConsumer):
 			"type":"websocket.accept"
 		})
 
-		await self.channel_layer.group_send(
-			self.chat_room,
-			{
-				'type':'room_update',
-				'text':json.dumps({'channel':{self.chat_room.split('_')[-1]: await self.users_per_room(connected_room_name)}})
-			}
-		)
+		# await self.channel_layer.group_send(
+		# 	self.chat_room,
+		# 	{
+		# 		'type':'room_update',
+		# 		'text':json.dumps({'channel':{self.chat_room.split('_')[-1]: await self.users_per_room(connected_room_name)}})
+		# 	}
+		# )
 
 		await self.channel_layer.group_send(
 			'online',
 			{
 				'type':'room_update',
-				'text':json.dumps({self.chat_room.split('_')[-1]: await self.users_per_room(connected_room_name)})
+				'text':json.dumps({'channel':{self.chat_room.split('_')[-1]: await self.users_per_room(connected_room_name)}})
 			}
 		)
 
