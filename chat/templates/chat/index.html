@@ -11,7 +11,6 @@
 		}
 
 		function joinroom(link) {
-			console.log(roomname)
 			var getLink = '/chat/' + link;
 			window.location.replace(getLink)
 		}
@@ -27,8 +26,8 @@
 			<p class="lead">Join an existing room</p>
 			<div class='d-flex flex-row flex-wrap'>
 				{% for room in rooms %}
-					<div class='col-md-4 my-2'>
-						{{room.room_name}}
+					<div class='col-md-4 my-2 d-flex flex-column'>
+						<p class='lead'>{{room.room_name}}</p>
 						<span id='badge_{{room.room_name}}' class='badge badge-success'>0</span>
 						<button class='btn btn-success' onclick='joinroom({{room.room_name}})'>Join</button>
 					</div>
