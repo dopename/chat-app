@@ -107,7 +107,7 @@ class ChatConsumer(AsyncConsumer):
 		})
 
 		await self.channel_layer.group_send(
-			self.chat_room,
+			'online',
 			{
 				'type':'room_update',
 				'text':json.dumps({self.chat_room.split('_')[-1]: await self.users_per_room(connected_room_name)})
