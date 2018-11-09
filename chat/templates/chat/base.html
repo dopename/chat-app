@@ -61,7 +61,9 @@
                               console.log("message", e);
                               var updateDiv = document.getElementById('online-users');
                               var parsedData = JSON.parse(e.data);
-                              updateDiv.innerHTML = parsedData.users;
+                              if (parsedData.users !== undefined) {
+                                    updateDiv.innerHTML = parsedData.users;
+                              }
                         }
                         socket.onopen = (e) => {
                               console.log("open", e)
