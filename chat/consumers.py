@@ -114,6 +114,14 @@ class ChatConsumer(AsyncConsumer):
 			}
 		)
 
+		await self.channel_layer.group_send(
+			'online',
+			{
+				'type':'room_update',
+				'text':json.dumps({self.chat_room.split('_')[-1]: await self.users_per_room(connected_room_name)})
+			}
+		)
+
 	async def websocket_receive(self, event):
 		print("receive", event)
 
@@ -160,7 +168,6 @@ class ChatConsumer(AsyncConsumer):
 				'type':'websocket.send',
 				'text':event['text']
 			})
-		await GlobalConsumer.online_update(event)
 
 	async def websocket_disconnect(self, event):
 		print("disconnected", event)
