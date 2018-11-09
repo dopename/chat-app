@@ -24,7 +24,7 @@
 				{% for room in rooms %}
 					<div class='col-md-4 my-2 d-flex flex-column'>
 						<p class='lead mb-0'>{{room.room_name}}</p>
-						<span id='badge_{{room.room_name}}' class='my-2 mx-auto w-50 badge badge-primary'>0</span>
+						<span id='badge_{{room.room_name}}' style="width:10%;" class='my-2 mx-auto badge badge-primary'>0</span>
 						<a href="/chat/{{room.room_name}}"><button class='btn btn-success'>Join</button></a>
 					</div>
 				{% endfor %}
