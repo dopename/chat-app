@@ -72,7 +72,7 @@
                                     span.classList.add('badge')
                                     span.classList.add('badge-primary')
                                     span.appendChild(document.createTextNode(parsedData.channel[updateKey]))
-                                    toUpdate.appendChild(span)
+                                    toUpdate.innerHTML += span
                               }
                         }
                         socket.onopen = (e) => {
