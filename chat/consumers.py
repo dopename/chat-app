@@ -21,7 +21,6 @@ from .models import *
 from .definitions import *
 
 class GlobalConsumer(AsyncConsumer):
-
 	async def websocket_connect(self, event):
 
 		user = self.scope['user'] #grab the user from the scope
@@ -97,6 +96,7 @@ class ChatConsumer(AsyncConsumer):
 		room_url = self.scope['url_route']['kwargs']['room_name']
 
 		me = self.scope['user']
+		self.me = me
 
 		connected_room = await self.join_room(room_url, me)
 
@@ -176,6 +176,8 @@ class ChatConsumer(AsyncConsumer):
 				'type':WEBSOCKET_DISCONNECT,
 			})
 
+		await self.leave_room(self.chat_room.split('_')[-1], self.me)
+
 		await self.channel_layer.group_send(
 			GLOBAL_USER_UPDATE,
 			{
@@ -220,8 +222,7 @@ class ChatConsumer(AsyncConsumer):
 			room_subscription.save(update_fields=['active'])
 			value = room_subscription
 		except:
-			value = "Subscription was not active"
-		return value
+			pass
 
 
 	@database_sync_to_async
