@@ -212,6 +212,19 @@ class ChatConsumer(AsyncConsumer):
 		return return_room
 
 	@database_sync_to_async
+	def leave_room(self, roomname, user):
+		value = None
+		try:
+			room_subscription = RoomSubscription.objects.get(room__room_name=roomname, chat_user=user.chat_user, active=True)
+			room_subscription.active = False
+			room_subscription.save(update_fields=['active'])
+			value = room_subscription
+		except:
+			value = "Subscription was not active"
+		return value
+
+
+	@database_sync_to_async
 	def create_chat_message(self, message, room, user):
 		print("creating chat messsage")
 		try:
