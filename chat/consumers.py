@@ -19,15 +19,6 @@ import datetime
 
 from .models import *
 from .definitions import *
-#MEssage, Thread
-
-# GLOBAL_ROOM_NAME = 'global'
-# GLOBAL_USER_UPDATE = 'global_user_update'
-# ROOM_USER_UPDATE = 'room_user_update'
-# ROOM_CHAT_MESSAGE = 'room_chat_message'
-# WEBSOCKET_ACCEPT = 'websocket.accept'
-# WEBSOCKET_DISCONNECT = 'websocket.disconnect'
-# WEBSOCKET_SEND = 'websocket.send'
 
 class GlobalConsumer(AsyncConsumer):
 
@@ -107,7 +98,7 @@ class ChatConsumer(AsyncConsumer):
 
 		me = self.scope['user']
 
-		connected_room = await self.get_room(room_url, me)
+		connected_room = await self.join_room(room_url, me)
 
 		connected_room_name = connected_room.room.room_name
 
@@ -203,7 +194,7 @@ class ChatConsumer(AsyncConsumer):
 		return len(RoomSubscription.objects.filter(active=True, room__room_name=roomname))
 
 	@database_sync_to_async
-	def get_room(self, roomname, user):
+	def join_room(self, roomname, user):
 		return_room = None
 		room = None
 		try:

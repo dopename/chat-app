@@ -120,6 +120,8 @@
 		}
 		socket.onclose = (e) => {
 			console.log("close", e)
+
+			socket.close();
 		}
 	</script>
 
