@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from asgiref.sync import AsyncToSync
 from channels.layers import get_channel_layer
+from .definitions import *
 
 def home(request):
 	template_name = 'chat/index.html'
