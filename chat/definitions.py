@@ -1,0 +1,7 @@
+GLOBAL_ROOM_NAME = 'global'
+GLOBAL_USER_UPDATE = 'global_user_update'
+ROOM_USER_UPDATE = 'room_user_update'
+ROOM_CHAT_MESSAGE = 'room_chat_message'
+WEBSOCKET_ACCEPT = 'websocket.accept'
+WEBSOCKET_DISCONNECT = 'websocket.disconnect'
+WEBSOCKET_SEND = 'websocket.send'
