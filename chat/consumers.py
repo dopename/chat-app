@@ -40,28 +40,22 @@ class GlobalConsumer(AsyncConsumer):
 
 			await self.login_user(user)
 
-		await self.channel_layer.group_add(
+		await self.channel_layer.group_add( #add global room name to channel layer
 			GLOBAL_ROOM_NAME, 
 			self.channel_name
 		)
 
-		await self.send({
+		await self.send({ #accept the connection
 			"type":WEBSOCKET_ACCEPT,
 		})
 
-		await self.channel_layer.group_send(
+		await self.channel_layer.group_send( #send the updated user count to global group
 			GLOBAL_ROOM_NAME,
 			{
 				'type':GLOBAL_USER_UPDATE,
 				'text':json.dumps({'users':await self.count_current_users()})
 			}
 		)
-
-	# async def room_update(self, event):
-	# 	await self.send({
-	# 			'type':WEBSOCKET_SEND,
-	# 			'text':event['text']
-	# 		})
 
 	async def websocket_receive(self, event):
 		print("receive", event)

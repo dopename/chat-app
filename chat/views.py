@@ -27,13 +27,13 @@ def chat(request, room):
 	except:
 		print('sucks')
 
-	AsyncToSync(channel_layer.send)(
-		GLOBAL_ROOM_NAME,
-		{
-			'type':GLOBAL_USER_UPDATE,
-			'text':request.user.username + '!!!!'
-		}
-	)
+	# AsyncToSync(channel_layer.send)(
+	# 	GLOBAL_ROOM_NAME,
+	# 	{
+	# 		'type':GLOBAL_USER_UPDATE,
+	# 		'text':request.user.username + '!!!!'
+	# 	}
+	# )
 
 	return render(request, template_name, {'room':room, 'messages':messages})
 
