@@ -4,6 +4,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from .models import * 
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from asgiref.sync import AsyncToSync
+from channels.layers import get_channel_layer
 
 def home(request):
 	template_name = 'chat/index.html'
@@ -16,12 +18,21 @@ def chat(request, room):
 	template_name = 'chat/chat.html'
 	chat_room = None
 	messages = None
+	channel_layer = get_channel_layer()
 
 	try:
 		chat_room = Room.objects.get(room_name=room)
 		messages = ChatMessage.objects.filter(room=chat_room)
 	except:
 		print('sucks')
+
+	AsyncToSync(channel_layer.send)(
+		GLOBAL_ROOM_NAME,
+		{
+			'type':GLOBAL_USER_UPDATE,
+			'text':request.user.username + '!!!!'
+		}
+	)
 
 	return render(request, template_name, {'room':room, 'messages':messages})
 
