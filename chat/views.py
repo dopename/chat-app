@@ -31,8 +31,8 @@ def chat(request, room):
 	async_to_sync(channel_layer.group_send)(
 		GLOBAL_ROOM_NAME,
 		{
-			'type':GLOBAL_USER_UPDATE,
-			'text':request.user.username + '!!!!'
+			'type':GLOBAL_USER_JOINED_ROOM,
+			'text':{'room':room, 'user':request.user.chat_user}
 		}
 	)
 
@@ -40,22 +40,34 @@ def chat(request, room):
 
 
 def user_login(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+	if request.method == 'POST':
+		username = request.POST.get('username')
+		password = request.POST.get('password')
 
-        user = authenticate(request=request, username=username, password=password)
-        if user:
-            if user.is_active:
-                login(request, user)
-                return HttpResponseRedirect('/')
-            else:
-                return HttpResponse("Your account is disabled.")
-        else:
-            print("Invalid login details: {0}, {1}".format(username, password))
-            return HttpResponse("Invalid login details supplied.")
-    else:
-        return render(request, 'chat/login.html', {})
+		user = authenticate(request=request, username=username, password=password)
+		if user:
+			if user.is_active:
+				login(request, user)
+
+				chat_user = ChatUser.objects.get(user=user.id)
+				chat_user.logged_in = True
+				chat_user.save(update_fields=['logged_in'])
+
+				async_to_sync(channel_layer.group_send)(
+					GLOBAL_ROOM_NAME,
+					{
+						'type':GLOBAL_USER_LOGGED_IN,
+						'text':{'room':room, 'user':chat_user.username}
+					}
+				)
+				return HttpResponseRedirect('/')
+			else:
+				return HttpResponse("Your account is disabled.")
+		else:
+			print("Invalid login details: {0}, {1}".format(username, password))
+			return HttpResponse("Invalid login details supplied.")
+	else:
+		return render(request, 'chat/login.html', {})
 		
 def user_logout(request):
 	logout(request)

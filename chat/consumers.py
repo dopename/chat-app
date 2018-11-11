@@ -7,18 +7,9 @@ from django.core import serializers
 import datetime
 
 from .models import *
-#MEssage, Thread
-
-import asyncio
-import json
-from django.contrib.auth import get_user_model
-from channels.consumer import AsyncConsumer
-from channels.db import database_sync_to_async
-from django.core import serializers
-import datetime
-
-from .models import *
 from .definitions import *
+
+USER_MAPPINGS = {}
 
 class GlobalConsumer(AsyncConsumer):
 	async def websocket_connect(self, event):
@@ -67,6 +58,8 @@ class GlobalConsumer(AsyncConsumer):
 		)
 
 	async def global_user_update(self, event):
+		if event['room']:
+			USER_MAPPINGS[event['room']] = event['user']
 		await self.send({
 				'type':WEBSOCKET_SEND,
 				'text':event['text']
