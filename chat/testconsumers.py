@@ -66,12 +66,12 @@ class ChatRoomConsumer(AsyncWebsocketConsumer):
 
 		self.chat_room = chat_room
 
-	await self.channel_layer.group_add(
-		self.chat_room, 
-		self.channel_name
-	)
+		await self.channel_layer.group_add(
+			self.chat_room, 
+			self.channel_name
+		)
 
-	await self.connect()
+		await self.connect()
 
 	async def websocket_receive(self, event):
 
