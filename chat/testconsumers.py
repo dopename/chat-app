@@ -25,7 +25,7 @@ class GlobalWebsocket(AsyncWebsocketConsumer):
 		await self.channel_layer.group_send(
 			GLOBAL_ROOM_NAME,
 			{
-				'type':GLOBAL_USER_UPDATE,
+				'type':GLOBAL_USER_LOGGED_IN,
 				'text':json.dumps({'user_count': await self.count_active_users()})
 			}
 		)
@@ -34,7 +34,7 @@ class GlobalWebsocket(AsyncWebsocketConsumer):
 		await self.channel_layer.group_send(
 			GLOBAL_ROOM_NAME,
 			{
-				'type':GLOBAL_USER_UPDATE,
+				'type':GLOBAL_USER_LOGGED_IN,
 				'text':json.dumps({'user_count': await self.count_active_users()})
 			}
 		)
