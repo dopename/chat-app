@@ -22,7 +22,7 @@ class GlobalWebsocket(AsyncWebsocketConsumer):
 			self.channel_name
 		)
 
-		await self.chanel_layer.group_send(
+		await self.channel_layer.group_send(
 			GLOBAL_ROOM_NAME,
 			{
 				'type':GLOBAL_USER_UPDATE,
@@ -31,7 +31,7 @@ class GlobalWebsocket(AsyncWebsocketConsumer):
 		)
 
 	async def websocket_disconnect(self, event):
-		await self.chanel_layer.group_send(
+		await self.channel_layer.group_send(
 			GLOBAL_ROOM_NAME,
 			{
 				'type':GLOBAL_USER_UPDATE,
