@@ -55,8 +55,10 @@ class GlobalConsumer(AsyncConsumer):
 		)
 
 	async def global_user_update(self, event):
-		if event['room']:
+		try:
 			USER_MAPPINGS[event['room']] = event['user']
+		except:
+			pass
 		await self.send({
 				'type':WEBSOCKET_SEND,
 				'text':event['text']
@@ -70,8 +72,10 @@ class GlobalConsumer(AsyncConsumer):
 			})		
 
 	async def global_user_joined_room(self, event):
-		if event['room']:
+		try:
 			USER_MAPPINGS[event['room']] = event['user']
+		except:
+			pass
 		await self.send({
 				'type':WEBSOCKET_SEND,
 				'text':event['text']
