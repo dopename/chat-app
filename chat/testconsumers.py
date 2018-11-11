@@ -1,7 +1,8 @@
 import asyncio
 import json
 from django.contrib.auth import get_user_model
-from channels.consumer import AsyncConsumer, AsyncWebsocketConsumer
+from channels.consumer import AsyncConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
 from django.core import serializers
 import datetime
