@@ -32,7 +32,7 @@ def chat(request, room):
 		GLOBAL_ROOM_NAME,
 		{
 			'type':GLOBAL_USER_JOINED_ROOM,
-			'text':{'room':room, 'user':request.user.chat_user.username}
+			'text':{'room':room, 'user':request.user.chat_user.chat_name}
 		}
 	)
 
@@ -57,7 +57,7 @@ def user_login(request):
 					GLOBAL_ROOM_NAME,
 					{
 						'type':GLOBAL_USER_LOGGED_IN,
-						'text':{'room':room, 'user':chat_user.username}
+						'text':{'room':room, 'user':chat_user.chat_name}
 					}
 				)
 				return HttpResponseRedirect('/')
