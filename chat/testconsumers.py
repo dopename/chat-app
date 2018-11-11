@@ -59,12 +59,12 @@ class GlobalWebsocket(AsyncWebsocketConsumer):
 class ChatRoomConsumer(AsyncWebsocketConsumer):
 	async def websocket_connect(self, event):
 
-	room_url = self.scope['url_route']['kwargs']['room_name']
-	connecting_user = self.scope['user']
+		room_url = self.scope['url_route']['kwargs']['room_name']
+		connecting_user = self.scope['user']
 
-	chat_room = 'chatroom_{}'.format(room_url)
+		chat_room = 'chatroom_{}'.format(room_url)
 
-	self.chat_room = chat_room
+		self.chat_room = chat_room
 
 	await self.channel_layer.group_add(
 		self.chat_room, 
