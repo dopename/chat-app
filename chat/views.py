@@ -6,7 +6,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from asgiref.sync import AsyncToSync
 from channels.layers import get_channel_layer
-from .definitions import *
+from .definitions import GLOBAL_ROOM_NAME, GLOBAL_USER_UPDATE, ROOM_USER_UPDATE, ROOM_CHAT_MESSAGE
+
 
 def home(request):
 	template_name = 'chat/index.html'
@@ -27,13 +28,13 @@ def chat(request, room):
 	except:
 		print('sucks')
 
-	# AsyncToSync(channel_layer.send)(
-	# 	GLOBAL_ROOM_NAME,
-	# 	{
-	# 		'type':GLOBAL_USER_UPDATE,
-	# 		'text':request.user.username + '!!!!'
-	# 	}
-	# )
+	AsyncToSync(channel_layer.send)(
+		GLOBAL_ROOM_NAME,
+		{
+			'type':GLOBAL_USER_UPDATE,
+			'text':request.user.username + '!!!!'
+		}
+	)
 
 	return render(request, template_name, {'room':room, 'messages':messages})
 

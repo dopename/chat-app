@@ -176,8 +176,6 @@ class ChatConsumer(AsyncConsumer):
 				'type':WEBSOCKET_DISCONNECT,
 			})
 
-		await self.leave_room(self.chat_room.split('_')[-1], self.me)
-
 		await self.channel_layer.group_send(
 			GLOBAL_USER_UPDATE,
 			{
