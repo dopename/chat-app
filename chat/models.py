@@ -20,6 +20,11 @@ class Room(models.Model):
 	def user_list(self):
 		return [{linked.chat_user.chat_name:{'active':linked.active}} for linked in self.room_subscriptions.all().order_by('active')]
 
+	@property
+	def chat_room(self):
+		return 'chatroom_{}'.format(self.room_name)
+	
+
 class RoomSubscription(models.Model):
 	chat_user = models.ForeignKey(ChatUser, on_delete=models.CASCADE)
 	room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name='room_subscriptions')
