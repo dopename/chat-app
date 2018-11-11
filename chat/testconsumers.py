@@ -26,7 +26,7 @@ class GlobalWebsocket(AsyncWebsocketConsumer):
 			GLOBAL_ROOM_NAME,
 			{
 				'type':GLOBAL_USER_LOGGED_IN,
-				'text':json.dumps({'user_count': await self.count_active_users()})
+				'text':{'user_count': await self.count_active_users()}
 			}
 		)
 
@@ -35,7 +35,7 @@ class GlobalWebsocket(AsyncWebsocketConsumer):
 			GLOBAL_ROOM_NAME,
 			{
 				'type':GLOBAL_USER_LOGGED_IN,
-				'text':json.dumps({'user_count': await self.count_active_users()})
+				'text':{'user_count': await self.count_active_users()}
 			}
 		)
 
@@ -46,7 +46,7 @@ class GlobalWebsocket(AsyncWebsocketConsumer):
 	async def global_user_logged_in(self, event):
 		await self.send({
 				'type':WEBSOCKET_SEND,
-				'text':event['text']
+				'text':json.dumps(event['text'])
 			})		
 
 	async def global_user_joined_room(self, event):
