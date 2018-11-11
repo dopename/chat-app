@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from .models import * 
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from asgiref.sync import AsyncToSync
+from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from .definitions import GLOBAL_ROOM_NAME, GLOBAL_USER_UPDATE, ROOM_USER_UPDATE, ROOM_CHAT_MESSAGE
 
@@ -28,7 +28,7 @@ def chat(request, room):
 	except:
 		print('sucks')
 
-	AsyncToSync(channel_layer.send)(
+	async_to_sync(channel_layer.group_send)(
 		GLOBAL_ROOM_NAME,
 		{
 			'type':GLOBAL_USER_UPDATE,
