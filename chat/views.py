@@ -8,6 +8,7 @@ from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from .definitions import *
 
+channel_layer = get_channel_layer()
 
 def home(request):
 	template_name = 'chat/index.html'
@@ -20,7 +21,6 @@ def chat(request, room):
 	template_name = 'chat/chat.html'
 	chat_room = None
 	messages = None
-	channel_layer = get_channel_layer()
 
 	try:
 		chat_room = Room.objects.get(room_name=room)

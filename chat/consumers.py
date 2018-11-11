@@ -19,8 +19,6 @@ class GlobalConsumer(AsyncConsumer):
 		if user.is_authenticated: #update the user's logged in attribute if they are logged in
 			self.user = self.scope['user']
 
-			await self.login_user(user)
-
 		await self.channel_layer.group_add( #add global room name to channel layer
 			GLOBAL_ROOM_NAME, 
 			self.channel_name
@@ -42,7 +40,6 @@ class GlobalConsumer(AsyncConsumer):
 		print("receive", event)
 
 	async def websocket_disconnect(self, event):
-		await self.logout_user(self.user)
 
 		await self.channel_layer.group_send(
 			GLOBAL_ROOM_NAME,
@@ -65,17 +62,20 @@ class GlobalConsumer(AsyncConsumer):
 				'text':event['text']
 			})
 
-	@database_sync_to_async
-	def login_user(self, user):
-		chat_user = ChatUser.objects.get(user=user.id)
-		chat_user.logged_in = True
-		chat_user.save(update_fields=['logged_in'])
 
-	@database_sync_to_async
-	def logout_user(self, user):
-		chat_user = ChatUser.objects.get(user=user.id)
-		chat_user.logged_in = False
-		chat_user.save(update_fields=['logged_in'])
+	async def global_user_logged_in(self, event):
+		await self.send({
+				'type':WEBSOCKET_SEND,
+				'text':json.dumps(event['text'])
+			})		
+
+	async def global_user_joined_room(self, event):
+		if event['room']:
+			USER_MAPPINGS[event['room']] = event['user']
+		await self.send({
+				'type':WEBSOCKET_SEND,
+				'text':event['text']
+			})
 
 	@database_sync_to_async
 	def count_current_users(self):

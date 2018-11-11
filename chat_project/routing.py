@@ -6,7 +6,7 @@ from channels.security.websocket import AllowedHostsOriginValidator, OriginValid
 from chat.consumers import ChatConsumer, GlobalConsumer
 from chat.testconsumers import GlobalWebsocket, ChatRoomConsumer
 
-old_application = ProtocolTypeRouter({
+application = ProtocolTypeRouter({
 	'websocket': AllowedHostsOriginValidator(
 		AuthMiddlewareStack(
 			URLRouter(
@@ -23,7 +23,7 @@ old_application = ProtocolTypeRouter({
 	# }),
 })
 
-application = ProtocolTypeRouter({
+test_application = ProtocolTypeRouter({
 	'websocket': AllowedHostsOriginValidator(
 		AuthMiddlewareStack(
 			URLRouter(
