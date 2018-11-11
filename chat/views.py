@@ -32,7 +32,7 @@ def chat(request, room):
 		GLOBAL_ROOM_NAME,
 		{
 			'type':GLOBAL_USER_JOINED_ROOM,
-			'text':{'room':room, 'user':request.user.chat_user}
+			'text':{'room':room, 'user':request.user.chat_user.username}
 		}
 	)
 
