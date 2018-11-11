@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
-from .definitions import GLOBAL_ROOM_NAME, GLOBAL_USER_UPDATE, ROOM_USER_UPDATE, ROOM_CHAT_MESSAGE
+from .definitions import *
 
 
 def home(request):
