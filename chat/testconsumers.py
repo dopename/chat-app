@@ -54,7 +54,7 @@ class GlobalWebsocket(AsyncConsumer):
 			USER_MAPPINGS[event['text']['room']] = event['text']['user']
 		await self.send({
 				'type':WEBSOCKET_SEND,
-				'text':event['text']
+				'text':json.dumps(event['text'])
 			})
 
 	@database_sync_to_async
