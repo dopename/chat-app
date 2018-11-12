@@ -41,8 +41,6 @@ class GlobalWebsocket(AsyncConsumer):
 			}
 		)
 
-		self.close()
-
 		super().websocket_disconnect(event)
 
 	async def global_user_logged_in(self, event):
@@ -79,7 +77,9 @@ class ChatRoomConsumer(AsyncWebsocketConsumer):
 			self.channel_name
 		)
 
-		await self.connect()
+		await self.send({
+			'type':WEBSOCKET_ACCEPT
+		})
 
 	async def websocket_receive(self, event):
 
