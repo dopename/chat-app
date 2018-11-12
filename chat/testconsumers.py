@@ -15,12 +15,12 @@ USER_MAPPINGS = {}
 class GlobalWebsocket(AsyncWebsocketConsumer):
 	async def websocket_connect(self, event):
 
-		await self.connect()
-
 		await self.channel_layer.group_add( #add global room name to channel layer
 			GLOBAL_ROOM_NAME, 
 			self.channel_name
 		)
+
+		await self.connect()
 
 		await self.channel_layer.group_send(
 			GLOBAL_ROOM_NAME,
