@@ -53,7 +53,7 @@ class GlobalWebsocket(AsyncConsumer):
 
 	async def global_user_joined_room(self, event):
 		if event['room']:
-			USER_MAPPINGS[event['room']] = event['user']
+			USER_MAPPINGS[event['text']['room']] = event['text']['user']
 		await self.send({
 				'type':WEBSOCKET_SEND,
 				'text':event['text']
