@@ -111,6 +111,14 @@ class ChatRoomConsumer(AsyncConsumer):
 				}
 			)
 
+
+	async def websocket_disconnect(self, event):
+		print("disconnected", event)
+
+		await self.send({
+				'type':WEBSOCKET_DISCONNECT,
+			})
+
 	async def room_chat_message(self, event):
 		print('message', event)
 		await self.send({
