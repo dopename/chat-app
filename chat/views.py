@@ -57,7 +57,7 @@ def user_login(request):
 					GLOBAL_ROOM_NAME,
 					{
 						'type':GLOBAL_USER_LOGGED_IN,
-						'text':{'room':room, 'user':chat_user.chat_name}
+						'text':{'user':chat_user.chat_name}
 					}
 				)
 				return HttpResponseRedirect('/')
