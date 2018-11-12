@@ -54,10 +54,8 @@
                         }
 
                         var endpoint = wsStart + window.location.host + '/logged_in/';
-
-                        if (WebSocket(endpoint).readState !== 0 ) {
-                              var socket = new WebSocket(endpoint)
-                        }
+                        
+                        var socket = new WebSocket(endpoint)
 
                         socket.onmessage = (e) => {
                               console.log("message", e);
