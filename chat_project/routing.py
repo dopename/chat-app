@@ -33,8 +33,11 @@ application = ProtocolTypeRouter({
 			)
 
 		)
-	),
-	"channel":ChannelNameRouter({
+		{
 			"global":GlobalWebsocket
-	}),
+		}
+	),
+	# "channel":ChannelNameRouter({
+	# 		"global":GlobalWebsocket
+	# }),
 })
