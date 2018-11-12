@@ -12,7 +12,7 @@ from .definitions import *
 
 USER_MAPPINGS = {}
 
-class GlobalWebsocket(AsyncWebsocketConsumer):
+class GlobalWebsocket(AsyncConsumer):
 	async def websocket_connect(self, event):
 
 		await self.channel_layer.group_add( #add global room name to channel layer
@@ -20,7 +20,9 @@ class GlobalWebsocket(AsyncWebsocketConsumer):
 			self.channel_name
 		)
 
-		await self.connect()
+		await self.send({
+			'type':WEBSOCKET_ACCEPT
+		})
 
 		await self.channel_layer.group_send(
 			GLOBAL_ROOM_NAME,
