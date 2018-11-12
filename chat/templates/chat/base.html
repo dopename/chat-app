@@ -46,31 +46,31 @@
             {% if request.user.is_authenticated %}
                   <script>
                         console.log(window.location)
-                        // var loc = window.location
+                        var loc = window.location
 
-                        // var wsStart = "ws://"
-                        // if (loc.protocol == 'https:') {
-                        //       wsStart = 'wss://'
-                        // }
+                        var wsStart = "ws://"
+                        if (loc.protocol == 'https:') {
+                              wsStart = 'wss://'
+                        }
 
-                        // var endpoint = wsStart + window.location.host + '/logged_in/';
+                        var endpoint = wsStart + window.location.host + '/logged_in/';
                         
-                        // var socket = new WebSocket(endpoint)
+                        var socket = new WebSocket(endpoint)
 
                         socket.onmessage = (e) => {
                               console.log("message", e);
-                              // var updateDiv = document.getElementById('online-users');
-                              // var parsedData = JSON.parse(e.data);
-                              // if (parsedData.users !== undefined) {
-                              //       updateDiv.innerHTML = parsedData.users;
-                              // }
-                              // if (parsedData.channel !== undefined) {
-                              //       var updateKey = Object.keys(parsedData.channel)[0]
-                              //       var toUpdate = document.getElementById('badge_' + updateKey);
-                              //       console.log(updateKey, parsedData.channel[updateKey])
+                              var updateDiv = document.getElementById('online-users');
+                              var parsedData = JSON.parse(e.data);
+                              if (parsedData.users !== undefined) {
+                                    updateDiv.innerHTML = parsedData.users;
+                              }
+                              if (parsedData.channel !== undefined) {
+                                    var updateKey = Object.keys(parsedData.channel)[0]
+                                    var toUpdate = document.getElementById('badge_' + updateKey);
+                                    console.log(updateKey, parsedData.channel[updateKey])
                               
-                              //       toUpdate.innerHTML = parsedData.channel[updateKey];
-                              // }
+                                    toUpdate.innerHTML = parsedData.channel[updateKey];
+                              }
                         }
                         socket.onopen = (e) => {
                               console.log("open", e)
