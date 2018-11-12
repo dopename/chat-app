@@ -35,6 +35,6 @@ application = ProtocolTypeRouter({
 		)
 	),
 	"channel":ChannelNameRouter({
-			"global":GlobalWorker
+			"global":GlobalWebsocket
 	}),
 })
