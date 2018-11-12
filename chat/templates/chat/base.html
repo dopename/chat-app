@@ -55,7 +55,7 @@
 
                         var endpoint = wsStart + window.location.host + '/logged_in/';
 
-                        if (Websocket(endpoint).readState !== 0 ) {
+                        if (WebSocket(endpoint).readState !== 0 ) {
                               var socket = new WebSocket(endpoint)
                         }
 
