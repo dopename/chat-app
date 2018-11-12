@@ -29,13 +29,12 @@ application = ProtocolTypeRouter({
 			URLRouter(
 				[
 					url(r"^chat/(?P<room_name>[\w.@+-]+)/$", ChatRoomConsumer),
-					url(r"^logged_in/$", GlobalWebsocket),
 				]
 			)
 
 		)
 	),
-	# "channel":ChannelNameRouter({
-	# 		"global":GlobalWorker
-	# }),
+	"channel":ChannelNameRouter({
+			"global":GlobalWorker
+	}),
 })
