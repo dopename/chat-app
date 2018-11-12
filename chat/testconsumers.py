@@ -62,7 +62,7 @@ class GlobalWebsocket(AsyncConsumer):
 		return len(ChatUser.objects.filter(logged_in=True))
 
 
-class ChatRoomConsumer(AsyncWebsocketConsumer):
+class ChatRoomConsumer(AsyncConsumer):
 	async def websocket_connect(self, event):
 
 		room_url = self.scope['url_route']['kwargs']['room_name']
