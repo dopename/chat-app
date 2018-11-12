@@ -40,8 +40,10 @@ class GlobalWebsocket(AsyncConsumer):
 				'text':{'user_count': await self.count_active_users()}
 			}
 		)
-
-		super().websocket_disconnect(event)
+		
+		await self.send({
+				'type':WEBSOCKET_DISCONNECT,
+			})
 
 	async def global_user_logged_in(self, event):
 		await self.send({
