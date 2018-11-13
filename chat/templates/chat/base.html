@@ -43,6 +43,7 @@
 	</style>
 	</head>
 	<body>
+		{% if not active_session %}
 		<script>
 			var openWebsocketConnection = () => {
 				var loc = window.location
@@ -103,6 +104,7 @@
 			websocketManagment()
 
 		</script>
+		{% endif %}
 
 		<div class='d-flex flex-row'>
 			<a href="/" class="mr-auto text-primary"><i class="fa fa-home"></i></a>
