@@ -157,7 +157,7 @@ class ChatRoomConsumer(AsyncConsumer):
 
 			await self.create_chat_message(user=chat_user, message=msg, chat_room=self.chat_room)
 
-			await self.channel_later.group_send(
+			await self.channel_layer.group_send(
 				self.chat_room,
 				{
 					'type':ROOM_CHAT_MESSAGE,
@@ -168,6 +168,14 @@ class ChatRoomConsumer(AsyncConsumer):
 
 	async def websocket_disconnect(self, event):
 		print("disconnected", event)
+
+		await self.channel_layer.group_send(
+			GLOBAL_ROOM_NAME
+			{
+				'type':'global_user_joined_room',
+				'text':'testing'
+			}
+		)
 
 		await self.send({
 				'type':WEBSOCKET_DISCONNECT,
