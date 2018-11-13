@@ -4,13 +4,25 @@ from django.contrib.auth import get_user_model
 from channels.consumer import AsyncConsumer
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
+from asgiref.sync import AsyncToSync
 from django.core import serializers
+from channels.layers import get_channel_layer
 import datetime
+import time
 
 from .models import *
 from .definitions import *
 
 USER_MAPPINGS = {}
+
+while True:
+	channel_layer = get_channel_layer()
+    for group in ['global']:
+        print('GROUP', group)
+        for channel, length in AsyncToSync(channel_layer.group_length)(group).items():
+            print(channel, length, '*' * length)
+        print('#####')
+    time.sleep(3)
 
 class GlobalWebsocket(AsyncConsumer):
 	async def websocket_connect(self, event):
@@ -85,7 +97,6 @@ class GlobalWebsocket(AsyncConsumer):
 			self.disconnect_global_channel(session.channel_name)
 
 			session.delete()
-			
 
 	@database_sync_to_async
 	def update_channel_record(self, channel):
