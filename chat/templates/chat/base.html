@@ -43,7 +43,7 @@
       </style>
 	</head>
 	<body>
-            {% if request.user.is_authenticated %}
+            {% if not active_session %}
                   <script>
                         console.log(window.location)
                         var loc = window.location

@@ -17,25 +17,11 @@ class WebsocketChecker:
 	def __init__(self):
 		self.session_id = None
 
-	def set_session_id(self, session_id):
-		self.session_id = session_id
+	# def set_session_id(self, session_id):
+	# 	self.session_id = session_id
 
-	def check_session_id_active(self):
-		ws_clients = WebsocketClient.objects.filter(session_id=self.session_id)
-
-		if len(ws_clients) < 1:
-			return []
-		return [ws for ws in ws_clients]
-
-	def add_global_channel(self, session):
-		if self.session_id is None:
-			self.session_id = session._session_key
-
-		current_channels = self.check_session_id_active()
-		flag = False
-
-		if flag:
-			WebsocketClient.create(group_name=GLOBAL_ROOM_NAME, session_id=self.session_id)	
+	def check_session_id_active(self, session_id):
+		return WebsocketClient.objects.filter(session_id=session_id).exists()
 
 
 class Home(View, WebsocketChecker):
@@ -43,7 +29,7 @@ class Home(View, WebsocketChecker):
 
 	def get(self, request, *args, **kwargs):
 		available_rooms = Room.objects.all()
-		return render(request, self.template_name, {'rooms':available_rooms})
+		return render(request, self.template_name, {'rooms':available_rooms, 'active_session':self.check_session_id_active(request.session.session_key)})
 
 
 class Chatroom(View, WebsocketChecker, LoginRequiredMixin):
@@ -73,7 +59,7 @@ class Chatroom(View, WebsocketChecker, LoginRequiredMixin):
 			}
 		)
 
-		return render(request, self.template_name, {'room':room, 'messages':messages})
+		return render(request, self.template_name, {'room':room, 'messages':messages, 'active_session':self.check_session_id_active(request.session.session_key)})
 
 
 def user_login(request):
