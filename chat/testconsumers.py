@@ -47,7 +47,7 @@ class GlobalWebsocket(AsyncConsumer):
 			GLOBAL_ROOM_NAME,
 			{
 				'type':GLOBAL_USER_LOGGED_IN,
-				'text':{'global_user_count_update':{'total_users':await self.count_current_users()}}
+				'text':{'global_user_count_update':{'total_users':await self.count_active_users()}}
 			}
 		)
 
@@ -56,7 +56,7 @@ class GlobalWebsocket(AsyncConsumer):
 			GLOBAL_ROOM_NAME,
 			{
 				'type':GLOBAL_USER_LOGGED_IN,
-				'text':{'global_user_count_update':{'total_users':await self.count_current_users()}}
+				'text':{'global_user_count_update':{'total_users':await self.count_active_users()}}
 			}
 		)
 
