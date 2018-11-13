@@ -76,17 +76,17 @@ class GlobalWebsocket(AsyncConsumer):
 		if len(sessions) > 1:
 			for session in sessions:
 
-				self.disconnect_global_channel(session.channel_name)
+				await self.disconnect_global_channel(session.channel_name)
 
 				session.delete()
-			self.create_channel_record()
+			await self.create_channel_record()
 		elif len(sessions) > 0:
 			session = sessions[0]
 			self.disconnect_global_channel(session.channel_name)
 			session.channel_name = self.channel_name
 			session.save(update_fields=['channel_name'])
 		else:
-			self.create_channel_record()
+			await self.create_channel_record()
 
 
 	@database_sync_to_async
