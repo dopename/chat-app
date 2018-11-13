@@ -170,7 +170,7 @@ class ChatRoomConsumer(AsyncConsumer):
 		print("disconnected", event)
 
 		await self.channel_layer.group_send(
-			GLOBAL_ROOM_NAME
+			GLOBAL_ROOM_NAME,
 			{
 				'type':'global_user_joined_room',
 				'text':'testing'
