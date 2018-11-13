@@ -78,6 +78,14 @@ class GlobalWebsocket(AsyncConsumer):
 				'text':json.dumps(event['text'])
 			})
 
+	async def global_user_left_room(self, event):
+		# if 'room' in event.keys():
+		# 	USER_MAPPINGS[event['text']['room']] = event['text']['user']
+		await self.send({
+				'type':WEBSOCKET_SEND,
+				'text':json.dumps(event['text'])
+			})
+
 	async def disconnect_global_channel(self, channel_name):
 		self.channel_layer.group_discard(
 			GLOBAL_ROOM_NAME,
