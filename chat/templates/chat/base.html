@@ -44,8 +44,6 @@
 	</head>
 	<body>
 		<script>
-			var onlineUsers = document.getElementById('online-users');
-
 			var openWebsocketConnection = () => {
 				var loc = window.location
 
@@ -63,6 +61,7 @@
 
 			var websocketManagment = () => {
 				var socket = openWebsocketConnection()
+				var onlineUsers = document.getElementById('online-users');
 
 				socket.onmessage = (e) => {
 					console.log("message", e);
@@ -85,6 +84,7 @@
 						return null
 					}
 				}
+
 				socket.onopen = (e) => {
 					console.log("open", e)
 				}
