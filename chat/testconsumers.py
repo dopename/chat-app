@@ -15,7 +15,7 @@ USER_MAPPINGS = {}
 class GlobalWebsocket(AsyncConsumer):
 	async def websocket_connect(self, event):
 
-		await self.close_old_channel():
+		await self.close_old_channel()
 
 		print(self.scope['session'].session_key)
 
