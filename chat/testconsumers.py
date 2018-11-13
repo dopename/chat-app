@@ -14,13 +14,14 @@ from .models import *
 from .definitions import *
 
 USER_MAPPINGS = {}
-
-while True:
+x = 0
+while x < 5:
 	channel_layer = get_channel_layer()
-	for channel in channel_layer:
+	for channel in channel_layer.hosts:
 		print(channel)
 		print('#####')
-	time.sleep(3)
+		x += 1
+		time.sleep(3)
 
 class GlobalWebsocket(AsyncConsumer):
 	async def websocket_connect(self, event):
