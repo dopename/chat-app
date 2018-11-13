@@ -239,7 +239,7 @@ class ChatRoomConsumer(AsyncConsumer):
 	@database_sync_to_async
 	def create_chat_message(self, message, chat_room, user):
 		print("creating chat messsage")
-		room = Room.objects.get(chat_room=chat_room)
+		room = Room.objects.get(room_name=chat_room.split('_')[-1])
 		print(room)
 		newmsg = ChatMessage.objects.create(user=user, message=message, room=room)
 		print(newmsg)
