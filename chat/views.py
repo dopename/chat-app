@@ -43,12 +43,6 @@ class Home(View, WebsocketChecker):
 
 	def get(self, request, *args, **kwargs):
 		available_rooms = Room.objects.all()
-
-		if self.session_id is None:
-			self.session_id = request.session._session_key
-
-		#self.add_global_channel()
-
 		return render(request, self.template_name, {'rooms':available_rooms})
 
 
@@ -60,7 +54,7 @@ class Chatroom(View, WebsocketChecker):
 		messages = None
 
 		try:
-			print("****************\n\n" + request.session._session_key + "\n\n*******************\n\n")
+			print("****************\n\n" + request.session + "\n\n*******************\n\n")
 		except:
 			pass
 
