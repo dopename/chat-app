@@ -19,7 +19,7 @@ class GlobalWebsocket(AsyncConsumer):
 			await self.accept_and_create_channel()
 
 			try:
-				print(self.scope['session'])
+				#print(self.scope['session'])
 				print(self.scope['session'].session_key)
 				print(self.scope['session']['session_key'])
 			except:
