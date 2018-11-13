@@ -156,8 +156,7 @@ class ChatRoomConsumer(AsyncConsumer):
 			user = self.scope['user']
 			username = 'default'
 
-			if user.is_authenticated:
-				chat_user = user.chat_user
+			chat_user = user.chat_user
 
 			response = {
 				'message':msg,
@@ -220,6 +219,8 @@ class ChatRoomConsumer(AsyncConsumer):
 		else:
 			RoomSubscription.objects.create(chat_user=chat_user, room=chat_room, active=True)
 
+		return None
+
 	@database_sync_to_async
 	def leave_chatroom(self, chat_user, room):
 		print(f"Disconnecting {chat_user.chat_name} from {room}")
@@ -233,12 +234,14 @@ class ChatRoomConsumer(AsyncConsumer):
 				rs.active == False
 				rs.save(update_fields=['active'])
 				print(rs.active)
+		return None
 
 	@database_sync_to_async
 	def create_chat_message(self, message, chat_room, user):
 		print("creating chat messsage")
 		try:
 			room = Room.objects.get(chat_room=chat_room)
+			print(room)
 			ChatMessage.objects.create(user=user, message=message, room=room)
 			return True
 		except:
