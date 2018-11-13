@@ -90,8 +90,8 @@ class GlobalWebsocket(AsyncConsumer):
 	@database_sync_to_async
 	def update_channel_record(self, channel):
 		self.disconnect_global_channel(channel.channel_name)
-		session.channel_name = self.channel_name
-		session.save(update_fields=['channel_name'])
+		channel.channel_name = self.channel_name
+		channel.save(update_fields=['channel_name'])
 
 	@database_sync_to_async
 	def count_active_users(self):
