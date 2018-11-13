@@ -72,21 +72,21 @@ class GlobalWebsocket(AsyncConsumer):
 	@database_sync_to_async
 	def close_old_channel(self):
 		sessions = WebsocketClient.objects.filter(session_id=self.scope['session'].session_key, group_name=GLOBAL_ROOM_NAME)
-
+		print(sessions)
 		if len(sessions) > 1:
 			for session in sessions:
 
-				await self.disconnect_global_channel(session.channel_name)
+				self.disconnect_global_channel(session.channel_name)
 
 				session.delete()
-			await self.create_channel_record()
+			self.create_channel_record()
 		elif len(sessions) > 0:
 			session = sessions[0]
 			self.disconnect_global_channel(session.channel_name)
 			session.channel_name = self.channel_name
 			session.save(update_fields=['channel_name'])
 		else:
-			await self.create_channel_record()
+			self.create_channel_record()
 
 
 	@database_sync_to_async
