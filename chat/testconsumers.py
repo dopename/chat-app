@@ -15,27 +15,26 @@ USER_MAPPINGS = {}
 class GlobalWebsocket(AsyncConsumer):
 	async def websocket_connect(self, event):
 
-		if not await self.check_if_active():
-			await self.accept_and_create_channel()
+		await self.close_old_channel():
 
-			print(self.scope['session'].session_key)
+		print(self.scope['session'].session_key)
 
-			await self.channel_layer.group_add( #add global room name to channel layer
-				GLOBAL_ROOM_NAME, 
-				self.channel_name
-			)
+		await self.channel_layer.group_add( #add global room name to channel layer
+			GLOBAL_ROOM_NAME, 
+			self.channel_name
+		)
 
-			await self.send({
-				'type':WEBSOCKET_ACCEPT
-			})
+		await self.send({
+			'type':WEBSOCKET_ACCEPT
+		})
 
-			await self.channel_layer.group_send(
-				GLOBAL_ROOM_NAME,
-				{
-					'type':GLOBAL_USER_LOGGED_IN,
-					'text':{'user_count': await self.count_active_users()}
-				}
-			)
+		await self.channel_layer.group_send(
+			GLOBAL_ROOM_NAME,
+			{
+				'type':GLOBAL_USER_LOGGED_IN,
+				'text':{'user_count': await self.count_active_users()}
+			}
+		)
 
 	async def websocket_disconnect(self, event):
 		await self.channel_layer.group_send(
@@ -64,21 +63,48 @@ class GlobalWebsocket(AsyncConsumer):
 				'text':json.dumps(event['text'])
 			})
 
+	async def disconnect_global_channel(self, channel_name):
+		self.channel_layer.group_discard(
+			GLOBAL_ROOM_NAME,
+			channel_name
+		)
+
+		self.create_channel_record()
+
+	@database_sync_to_async
+	def close_old_channel(self):
+		sessions = WebsocketClient.objects.filter(session_id=self.session_id, group_name=GLOBAL_ROOM_NAME)
+
+		if len(sessions) > 1:
+			for session in sessions:
+
+				self.disconnect_global_channel(session.channel_name)
+
+				session.delete()
+			self.create_channel_record()
+		elif len(sessions) > 0:
+			session = sessions[0]
+			self.disconnect_global_channel(session.channel_name)
+			session.channel_name = self.channel_name
+			session.save(update_fields=['channel_name'])
+		else:
+			self.create_channel_record
+
+
 	@database_sync_to_async
 	def count_active_users(self):
 		return len(ChatUser.objects.filter(logged_in=True))
 
-	@database_sync_to_async
-	def check_if_active(self):
-		ws_clients = WebsocketClient.objects.filter(session_id=self.scope['session'].session_key, group_name=GLOBAL_ROOM_NAME)
-		if GLOBAL_ROOM_NAME in [ws.group_name for ws in ws_clients]:
-			return True
-		return False
+	# @database_sync_to_async
+	# def check_if_active(self):
+	# 	ws_clients = WebsocketClient.objects.filter(session_id=self.scope['session'].session_key, group_name=GLOBAL_ROOM_NAME)
+	# 	if GLOBAL_ROOM_NAME in [ws.group_name for ws in ws_clients]:
+	# 		return True
+	# 	return False
 
 	@database_sync_to_async
-	def accept_and_create_channel(self):
-		ws_client = WebsocketClient.objects.create(session_id=self.scope['session'].session_key, group_name=GLOBAL_ROOM_NAME)
-		return ws_client
+	def create_channel_record(self):
+		ws_client = WebsocketClient.objects.create(session_id=self.scope['session'].session_key, group_name=GLOBAL_ROOM_NAME, channel_name=self.channel_name)
 
 
 

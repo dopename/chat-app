@@ -43,25 +43,19 @@
       </style>
 	</head>
 	<body>
+            {% if request.user.is_authenticated %}
                   <script>
-                        if (localStorage.getItem('ws-global') !== undefined) {
-                              console.log(window.location)
-                              var loc = window.location
+                        console.log(window.location)
+                        var loc = window.location
 
-                              var wsStart = "ws://"
-                              if (loc.protocol == 'https:') {
-                                    wsStart = 'wss://'
-                              }
-
-                              var endpoint = wsStart + window.location.host + '/logged_in/';
-                              
-                              var socket = new WebSocket(endpoint)
-
-                              localStorage.setItem('ws-global', socket)
+                        var wsStart = "ws://"
+                        if (loc.protocol == 'https:') {
+                              wsStart = 'wss://'
                         }
-                        else {
-                              var socket = localStorage.getItem('ws-global')
-                        }
+
+                        var endpoint = wsStart + window.location.host + '/logged_in/';
+                        
+                        var socket = new WebSocket(endpoint)
 
                         socket.onmessage = (e) => {
                               console.log("message", e);
@@ -89,6 +83,7 @@
                               console.log("close", e)
                         }
                   </script>
+            {% endif %}
 
             <div class='d-flex flex-row'>
                   <a href="/" class="mr-auto text-primary"><i class="fa fa-home"></i></a>
