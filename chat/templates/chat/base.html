@@ -72,14 +72,14 @@
 					console.log(responseKeys)
 
 					if (responseKeys.indexOf('global_user_count_update') > -1) {
-						updateDiv.innerHTML = parsedData.global_user_count_update.total_users;
+						onlineUsers.innerHTML = parsedData.global_user_count_update.total_users;
 					}
 					if (responseKeys.indexOf('chatroom_user_count_update') > -1) {
 						var updateKey = parsedData.chatroom_user_count_update.room
-						var toUpdate = document.getElementById('badge_' + updateKey);
+						var roomOnlineUsers = document.getElementById('badge_' + updateKey);
 						console.log(updateKey, parsedData.chatroom_user_count_update.user_count)
 						
-						toUpdate.innerHTML = parsedData.chatroom_user_count_update.user_count;
+						roomOnlineUsers.innerHTML = parsedData.chatroom_user_count_update.user_count;
 					}
 					if (responseKeys.indexOf('user_logged_in') > -1) {
 						return null
