@@ -27,8 +27,8 @@ old_application = ProtocolTypeRouter({
 
 application = ProtocolTypeRouter({
 	'websocket': AllowedHostsOriginValidator(
-		AuthMiddlewareStack(
-			SessionMiddlewareStack(
+		SessionMiddlewareStack(
+			AuthMiddlewareStack(
 				URLRouter(
 					[
 						url(r"^chat/(?P<room_name>[\w.@+-]+)/$", ChatRoomConsumer),
