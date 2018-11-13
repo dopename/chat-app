@@ -39,7 +39,7 @@ class WebsocketChecker:
 
 
 class Home(View, WebsocketChecker):
-	self.template_name = 'chat/index.html'
+	template_name = 'chat/index.html'
 
 	def get(self, request, *args, **kwargs):
 		available_rooms = Room.objects.all()
@@ -47,13 +47,13 @@ class Home(View, WebsocketChecker):
 		if self.session_id is None:
 			self.session_id = request.session._session_key
 
-		self.add_global_channel()
+		#self.add_global_channel()
 
-		return render(request, template_name, {'rooms':available_rooms})
+		return render(request, self.template_name, {'rooms':available_rooms})
 
 
 class Chatroom(View, WebsocketChecker):
-	self.template_name = 'chat/chat.html'
+	template_name = 'chat/chat.html'
 
 	def get(self, request, room, *args, **kwargs):
 		chat_room = None
@@ -78,7 +78,7 @@ class Chatroom(View, WebsocketChecker):
 			}
 		)
 
-		return render(request, template_name, {'room':room, 'messages':messages})
+		return render(request, self.template_name, {'room':room, 'messages':messages})
 
 
 def user_login(request):
