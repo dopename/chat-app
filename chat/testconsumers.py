@@ -239,13 +239,11 @@ class ChatRoomConsumer(AsyncConsumer):
 	@database_sync_to_async
 	def create_chat_message(self, message, chat_room, user):
 		print("creating chat messsage")
-		try:
-			room = Room.objects.get(chat_room=chat_room)
-			print(room)
-			ChatMessage.objects.create(user=user, message=message, room=room)
-			return True
-		except:
-			return False
+		room = Room.objects.get(chat_room=chat_room)
+		print(room)
+		newmsg = ChatMessage.objects.create(user=user, message=message, room=room)
+		print(newmsg)
+		return True
 
 	@database_sync_to_async
 	def get_current_user_count(self):
