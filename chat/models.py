@@ -38,3 +38,10 @@ class ChatMessage(models.Model):
 	message = models.TextField()
 	room = models.ForeignKey(Room, on_delete=models.CASCADE)
 	timestamp = models.DateTimeField(default=datetime.datetime.now)
+
+
+class WebsocketClient(models.Model):
+	group_name = models.CharField(max_length=128)
+	session_id = models.CharField(max_length=128)
+	last_active = models.DateTimeField(auto_now_add=True)
+	

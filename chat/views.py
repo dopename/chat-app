@@ -7,36 +7,94 @@ from django.contrib.auth.decorators import login_required
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from .definitions import *
+from django.views import View
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 channel_layer = get_channel_layer()
 
-def home(request):
-	template_name = 'chat/index.html'
-	if request.method == 'GET':
+class WebsocketChecker:
+
+	def __init__(self):
+		self.session_id = None
+
+	def set_session_id(self, session_id):
+		self.session_id = session_id
+
+	def check_session_id_active(self):
+		ws_clients = WebsocketClient.objects.filter(session_id=self.session_id)
+
+		if len(ws_clients) < 1:
+			return []
+		return [ws for ws in ws_clients]
+
+	def add_global_channel(self, session):
+		if self.session_id is None:
+			self.session_id = session._session_key
+
+		current_channels = self.check_session_id_active()
+		flag = False
+
+		if len(current_channels) > 0:
+			if GLOBAL_ROOM_NAME not in [ws.group_name for ws in current_channels]:
+				async_to_sync(channel_layer.group_add)(
+					GLOBAL_ROOM_NAME,
+					await channel_layer.new_channel_name()
+				)
+
+				flag = True
+		else:
+			async_to_sync(channel_layer.group_add)(
+				GLOBAL_ROOM_NAME,
+				await channel_layer.new_channel_name()
+			)
+
+			flag = True
+
+		if flag:
+			WebsocketClient.create(group_name=GLOBAL_ROOM_NAME, session_id=self.session_id)	
+
+
+class Home(View, WebsocketChecker):
+	self.template_name = 'chat/index.html'
+
+	def get(self, request, *args, **kwargs):
 		available_rooms = Room.objects.all()
+
+		if self.session_id is None:
+			self.session_id = request.session._session_key
+
+		self.add_global_channel()
+
 		return render(request, template_name, {'rooms':available_rooms})
 
-@login_required
-def chat(request, room):
-	template_name = 'chat/chat.html'
-	chat_room = None
-	messages = None
 
-	try:
-		chat_room = Room.objects.get(room_name=room)
-		messages = ChatMessage.objects.filter(room=chat_room)
-	except:
-		print('sucks')
+class Chatroom(View, WebsocketChecker):
+	self.template_name = 'chat/chat.html'
 
-	async_to_sync(channel_layer.group_send)(
-		GLOBAL_ROOM_NAME,
-		{
-			'type':GLOBAL_USER_JOINED_ROOM,
-			'text':{'room':room, 'user':request.user.chat_user.chat_name}
-		}
-	)
+	def get(self, request, room, *args, **kwargs):
+		chat_room = None
+		messages = None
 
-	return render(request, template_name, {'room':room, 'messages':messages})
+		try:
+			print("****************\n\n" + request.session._session_key + "\n\n*******************\n\n")
+		except:
+			pass
+
+		try:
+			chat_room = Room.objects.get(room_name=room)
+			messages = ChatMessage.objects.filter(room=chat_room)
+		except:
+			print('sucks')
+
+		async_to_sync(channel_layer.group_send)(
+			GLOBAL_ROOM_NAME,
+			{
+				'type':GLOBAL_USER_JOINED_ROOM,
+				'text':{'room':room, 'user':request.user.chat_user.chat_name}
+			}
+		)
+
+		return render(request, template_name, {'room':room, 'messages':messages})
 
 
 def user_login(request):
