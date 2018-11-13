@@ -45,43 +45,59 @@
 	<body>
             {% if request.user.is_authenticated %}
                   <script>
-                        console.log(window.location)
-                        var loc = window.location
 
-                        var wsStart = "ws://"
-                        if (loc.protocol == 'https:') {
-                              wsStart = 'wss://'
-                        }
+                        var openWebsocketConnection = () => {
+                              var loc = window.location
 
-                        var endpoint = wsStart + window.location.host + '/logged_in/';
-                        
-                        var socket = new WebSocket(endpoint)
-
-                        socket.onmessage = (e) => {
-                              console.log("message", e);
-                              var updateDiv = document.getElementById('online-users');
-                              var parsedData = JSON.parse(e.data);
-                              if (parsedData.users !== undefined) {
-                                    updateDiv.innerHTML = parsedData.users;
+                              var wsStart = "ws://"
+                              if (loc.protocol == 'https:') {
+                                    wsStart = 'wss://'
                               }
-                              if (parsedData.channel !== undefined) {
-                                    var updateKey = Object.keys(parsedData.channel)[0]
-                                    var toUpdate = document.getElementById('badge_' + updateKey);
-                                    console.log(updateKey, parsedData.channel[updateKey])
+
+                              var endpoint = wsStart + window.location.host + '/logged_in/';
                               
-                                    toUpdate.innerHTML = parsedData.channel[updateKey];
-                              }
-                        }
-                        socket.onopen = (e) => {
-                              console.log("open", e)
+                              var socket = new WebSocket(endpoint)
+
+                              return socket
                         }
 
-                        socket.onerror = (e) => {
-                              console.log("error", e)
+                        var websocketManagment = () => {
+                              var socket = openWebsocketConnection()
+
+                              socket.onmessage = (e) => {
+                                    console.log("message", e);
+                                    var onlineUsers = document.getElementById('online-users');
+
+                                    var parsedData = JSON.parse(e.data);
+                                    var responseKeys = Object.keys(parsedData);
+                                    console.log(responseKeys)
+
+                                    if (parsedData.users !== undefined) {
+                                          updateDiv.innerHTML = parsedData.users;
+                                    }
+                                    if (parsedData.channel !== undefined) {
+                                          var updateKey = Object.keys(parsedData.channel)[0]
+                                          var toUpdate = document.getElementById('badge_' + updateKey);
+                                          console.log(updateKey, parsedData.channel[updateKey])
+                                    
+                                          toUpdate.innerHTML = parsedData.channel[updateKey];
+                                    }
+                              }
+                              socket.onopen = (e) => {
+                                    console.log("open", e)
+                              }
+
+                              socket.onerror = (e) => {
+                                    console.log("error", e)
+                              }
+                              socket.onclose = (e) => {
+                                    console.log("close", e)
+                              }
+
                         }
-                        socket.onclose = (e) => {
-                              console.log("close", e)
-                        }
+
+                        websocketManagment()
+
                   </script>
             {% endif %}
 
