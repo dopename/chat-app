@@ -186,11 +186,12 @@ class ChatRoomConsumer(AsyncConsumer):
 			}
 		)
 
+		await self.leave_chatroom(chat_user=self.scope['user'].chat_user, room=self.chat_room)
+
 		await self.send({
 				'type':WEBSOCKET_DISCONNECT,
 			})
 
-		await self.leave_chatroom(chat_user=self.scope['user'].chat_user, room=self.chat_room)
 
 	async def room_chat_message(self, event):
 		print('message', event)
