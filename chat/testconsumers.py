@@ -71,8 +71,8 @@ class GlobalWebsocket(AsyncConsumer):
 			})		
 
 	async def global_user_joined_room(self, event):
-		if 'room' in event.keys():
-			USER_MAPPINGS[event['text']['room']] = event['text']['user']
+		# if 'room' in event.keys():
+		# 	USER_MAPPINGS[event['text']['room']] = event['text']['user']
 		await self.send({
 				'type':WEBSOCKET_SEND,
 				'text':json.dumps(event['text'])
@@ -172,8 +172,8 @@ class ChatRoomConsumer(AsyncConsumer):
 		await self.channel_layer.group_send(
 			GLOBAL_ROOM_NAME,
 			{
-				'type':'global_user_joined_room',
-				'text':'testing'
+				'type':'global_user_left_room',
+				'text':await self.get_current_user_count()
 			}
 		)
 
@@ -221,3 +221,10 @@ class ChatRoomConsumer(AsyncConsumer):
 			return True
 		except:
 			return False
+
+	@database_sync_to_async
+	def get_current_user_count(self):
+		chat_room = [r for r in Room.objects.all() if r.chat_room == chat_room]
+		chat_room = chat_room[0]
+
+		return len(RoomSubscription.objects.filter(room=chat_room, active=True))
