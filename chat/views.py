@@ -34,22 +34,6 @@ class WebsocketChecker:
 		current_channels = self.check_session_id_active()
 		flag = False
 
-		if len(current_channels) > 0:
-			if GLOBAL_ROOM_NAME not in [ws.group_name for ws in current_channels]:
-				async_to_sync(channel_layer.group_add)(
-					GLOBAL_ROOM_NAME,
-					await channel_layer.new_channel_name()
-				)
-
-				flag = True
-		else:
-			async_to_sync(channel_layer.group_add)(
-				GLOBAL_ROOM_NAME,
-				await channel_layer.new_channel_name()
-			)
-
-			flag = True
-
 		if flag:
 			WebsocketClient.create(group_name=GLOBAL_ROOM_NAME, session_id=self.session_id)	
 
