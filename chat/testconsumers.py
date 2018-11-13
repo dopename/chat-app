@@ -216,6 +216,7 @@ class ChatRoomConsumer(AsyncConsumer):
 			if rs.active == False:
 				rs.active == True
 				rs.save(update_fields=['active'])
+				print(rs.active)
 		else:
 			RoomSubscription.objects.create(chat_user=chat_user, room=chat_room, active=True)
 
@@ -231,6 +232,7 @@ class ChatRoomConsumer(AsyncConsumer):
 			if rs.active == True:
 				rs.active == False
 				rs.save(update_fields=['active'])
+				print(rs.active)
 
 	@database_sync_to_async
 	def create_chat_message(self, message, chat_room, user):
