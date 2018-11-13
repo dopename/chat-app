@@ -195,6 +195,7 @@ class ChatRoomConsumer(AsyncConsumer):
 	@database_sync_to_async
 	def join_chatroom(self, chat_user, room):
 		print(f"Adding {chat_user.chat_name}")
+		chat_room = None
 		try:
 			chat_room = Room.objects.get(room_name=room)
 		except:
@@ -207,7 +208,7 @@ class ChatRoomConsumer(AsyncConsumer):
 				rs.active == True
 				rs.save(update_fields=['active'])
 		else:
-			RoomSubscription.objects.create(chat_user=chat_user, room=Room.objects.chat_room, active=True)
+			RoomSubscription.objects.create(chat_user=chat_user, room=chat_room, active=True)
 
 	@database_sync_to_async
 	def leave_chatroom(self, chat_user, room):
