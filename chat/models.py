@@ -42,7 +42,7 @@ class ChatMessage(models.Model):
 
 class WebsocketClient(models.Model):
 	group_name = models.CharField(max_length=128)
-	channel_name = models.CharField(max_length)
+	channel_name = models.CharField(max_length=128)
 	session_id = models.CharField(max_length=128)
 	last_active = models.DateTimeField(auto_now_add=True)
 	
