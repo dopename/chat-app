@@ -191,6 +191,11 @@ class ChatRoomConsumer(AsyncConsumer):
 			}
 		)
 
+		await self.channel_layer.group_discard(
+			self.chat_room,
+			self.channel_name
+		)
+
 		await self.leave_chatroom(chat_user=self.scope['user'].chat_user, room=self.chat_room)
 
 		await self.send({
