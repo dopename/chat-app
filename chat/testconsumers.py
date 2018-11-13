@@ -88,7 +88,7 @@ class GlobalWebsocket(AsyncConsumer):
 			session.channel_name = self.channel_name
 			session.save(update_fields=['channel_name'])
 		else:
-			self.create_channel_record
+			self.create_channel_record()
 
 
 	@database_sync_to_async
