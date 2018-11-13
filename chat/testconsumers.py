@@ -15,7 +15,17 @@ USER_MAPPINGS = {}
 class GlobalWebsocket(AsyncConsumer):
 	async def websocket_connect(self, event):
 
-		await self.close_old_channel()
+		active_channels = await self.check_if_active()
+		if len(active_channels) > 0:
+			if len(active_channels) > 1:
+				await self.close_old_channels(active_channels)
+
+				await self.create_channel_record()
+			else:
+				await self.update_channel_record(active_channels[0])
+		else:
+			await self.create_channel_record()
+
 
 		print(self.scope['session'].session_key)
 
@@ -70,35 +80,27 @@ class GlobalWebsocket(AsyncConsumer):
 		)
 
 	@database_sync_to_async
-	def close_old_channel(self):
-		sessions = WebsocketClient.objects.filter(session_id=self.scope['session'].session_key, group_name=GLOBAL_ROOM_NAME)
-		print(sessions)
-		if len(sessions) > 1:
-			for session in sessions:
-
-				self.disconnect_global_channel(session.channel_name)
-
-				session.delete()
-			self.create_channel_record()
-		elif len(sessions) > 0:
-			session = sessions[0]
+	def close_old_channel(self, sessions):
+		for session in sessions:
 			self.disconnect_global_channel(session.channel_name)
-			session.channel_name = self.channel_name
-			session.save(update_fields=['channel_name'])
-		else:
-			self.create_channel_record()
 
+			session.delete()
+			
+
+	@database_sync_to_async
+	def update_channel_record(self, channel):
+		self.disconnect_global_channel(channel.channel_name)
+		session.channel_name = self.channel_name
+		session.save(update_fields=['channel_name'])
 
 	@database_sync_to_async
 	def count_active_users(self):
 		return len(ChatUser.objects.filter(logged_in=True))
 
-	# @database_sync_to_async
-	# def check_if_active(self):
-	# 	ws_clients = WebsocketClient.objects.filter(session_id=self.scope['session'].session_key, group_name=GLOBAL_ROOM_NAME)
-	# 	if GLOBAL_ROOM_NAME in [ws.group_name for ws in ws_clients]:
-	# 		return True
-	# 	return False
+	@database_sync_to_async
+	def check_if_active(self):
+		ws_clients = WebsocketClient.objects.filter(session_id=self.scope['session'].session_key, group_name=GLOBAL_ROOM_NAME)
+		return ws_clients
 
 	@database_sync_to_async
 	def create_channel_record(self):
