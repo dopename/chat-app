@@ -17,10 +17,8 @@ USER_MAPPINGS = {}
 
 while True:
 	channel_layer = get_channel_layer()
-	for group in ['global']:
-		print('GROUP', group)
-		for channel, length in AsyncToSync(channel_layer.ring_size)(group).items():
-			print(channel, length, '*' * length)
+	for channel in channel_layer:
+		print(channel)
 		print('#####')
 	time.sleep(3)
 
