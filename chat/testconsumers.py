@@ -133,6 +133,8 @@ class ChatRoomConsumer(AsyncConsumer):
 			'type':WEBSOCKET_ACCEPT
 		})
 
+		await self.join_chatroom(chat_user=connecting_user.chat_user, room=room_url)
+
 	async def websocket_receive(self, event):
 
 		front_text = event.get('text', None)
@@ -171,12 +173,36 @@ class ChatRoomConsumer(AsyncConsumer):
 				'type':WEBSOCKET_DISCONNECT,
 			})
 
+		await self.leave_chatroom(chat_user=self.scope['user'].chat_user, room=self.chat_room)
+
 	async def room_chat_message(self, event):
 		print('message', event)
 		await self.send({
 				'type':WEBSOCKET_SEND,
 				'text':event['text']
 			})
+
+	@database_sync_to_async
+	def join_chatroom(self, chat_user, room):
+		room_subscription = RoomSubscription.objects.filter(chat_user=chat_user, room__room_name=room)
+		if room_subscription.exists():
+			rs = room_subscription[0]
+			if rs.active == False:
+				rs.active == True
+				rs.save(update_fields=['active'])
+		else:
+			RoomSubscription.objects.create(chat_user=chat_user, room=Room.objects.get(room_name=room), active=True)
+
+	@database_sync_to_async
+	def leave_chatroom(self, chat_user, room):
+		chat_room = [r for r in Room.objects.all() if r.chat_room == chat_room]
+		chat_room = chat_room[0]
+		room_subscription = RoomSubscription.objects.filter(chat_user=chat_user, room=chat_room)
+		if room_subscription.exists():
+			rs = room_subscription[0]
+			if rs.active == True:
+				rs.active == False
+				rs.save(update_fields=['active'])
 
 	@database_sync_to_async
 	def create_chat_message(self, message, chat_room, user):
