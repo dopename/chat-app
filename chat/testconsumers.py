@@ -60,6 +60,11 @@ class GlobalWebsocket(AsyncConsumer):
 			}
 		)
 
+		await self.channel_layer.group_discard(
+			GLOBAL_ROOM_NAME,
+			self.channel_name
+		)
+
 		await self.send({
 				'type':WEBSOCKET_DISCONNECT,
 			})
