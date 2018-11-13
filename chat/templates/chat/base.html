@@ -66,6 +66,8 @@
 				socket.onmessage = (e) => {
 					console.log("message", e);
 
+					var onlineUsers = document.getElementById('online-users');
+					
 					var parsedData = JSON.parse(e.data);
 					var responseKeys = Object.keys(parsedData);
 					console.log(responseKeys)
