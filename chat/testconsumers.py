@@ -19,7 +19,7 @@ while True:
 	channel_layer = get_channel_layer()
 	for group in ['global']:
 		print('GROUP', group)
-		for channel, length in AsyncToSync(channel_layer.group_length)(group).items():
+		for channel, length in AsyncToSync(channel_layer.ring_size)(group).items():
 			print(channel, length, '*' * length)
 		print('#####')
 	time.sleep(3)
