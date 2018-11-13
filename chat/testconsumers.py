@@ -17,7 +17,7 @@ class GlobalWebsocket(AsyncConsumer):
 
 		if not await self.check_if_active():
 			await self.accept_and_create_channel()
-			
+
 			print(self.scope['session'].session_key)
 
 			await self.channel_layer.group_add( #add global room name to channel layer
@@ -70,7 +70,7 @@ class GlobalWebsocket(AsyncConsumer):
 
 	@database_sync_to_async
 	def check_if_active(self):
-		ws_clients = WebsocketClient.objects.filter(session_id=self.scope['session'].session_key)
+		ws_clients = WebsocketClient.objects.filter(session_id=self.scope['session'].session_key, group_name=GLOBAL_ROOM_NAME)
 		if GLOBAL_ROOM_NAME in [ws.group_name for ws in ws_clients]:
 			return True
 		return False
