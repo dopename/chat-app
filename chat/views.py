@@ -46,8 +46,9 @@ class Home(View, WebsocketChecker):
 		return render(request, self.template_name, {'rooms':available_rooms})
 
 
-class Chatroom(View, WebsocketChecker):
+class Chatroom(View, WebsocketChecker, LoginRequiredMixin):
 	template_name = 'chat/chat.html'
+	login_url = '/login/'
 
 	def get(self, request, room, *args, **kwargs):
 		chat_room = None
