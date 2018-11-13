@@ -69,8 +69,6 @@ class GlobalWebsocket(AsyncConsumer):
 			channel_name
 		)
 
-		self.create_channel_record()
-
 	@database_sync_to_async
 	def close_old_channel(self):
 		sessions = WebsocketClient.objects.filter(session_id=self.scope['session'].session_key, group_name=GLOBAL_ROOM_NAME)
@@ -105,6 +103,7 @@ class GlobalWebsocket(AsyncConsumer):
 	@database_sync_to_async
 	def create_channel_record(self):
 		ws_client = WebsocketClient.objects.create(session_id=self.scope['session'].session_key, group_name=GLOBAL_ROOM_NAME, channel_name=self.channel_name)
+		print("Created new record {}".format(ws_clinet.session_id))
 
 
 
