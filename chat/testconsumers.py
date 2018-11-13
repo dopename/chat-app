@@ -73,7 +73,7 @@ class GlobalWebsocket(AsyncConsumer):
 
 	@database_sync_to_async
 	def close_old_channel(self):
-		sessions = WebsocketClient.objects.filter(session_id=self.session_id, group_name=GLOBAL_ROOM_NAME)
+		sessions = WebsocketClient.objects.filter(session_id=self.scope['session'].session_key, group_name=GLOBAL_ROOM_NAME)
 
 		if len(sessions) > 1:
 			for session in sessions:
