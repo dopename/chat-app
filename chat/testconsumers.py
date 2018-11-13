@@ -69,7 +69,7 @@ class GlobalWebsocket(AsyncConsumer):
 	@database_sync_to_async
 	def check_if_active(self):
 		ws_clients = WebsocketClient.objects.filter(session_id=self.channel_name)
-		if GLOBAL_ROOM_NAME in [ws.room_name for ws in ws_clients]:
+		if GLOBAL_ROOM_NAME in [ws.group_name for ws in ws_clients]:
 			return True
 		return False
 
