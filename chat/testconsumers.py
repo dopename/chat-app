@@ -194,7 +194,7 @@ class ChatRoomConsumer(AsyncConsumer):
 
 	@database_sync_to_async
 	def join_chatroom(self, chat_user, room):
-		print(f"Adding {chat_user.chat_name}")
+		print(f"Connecting {chat_user.chat_name} to {room}")
 		chat_room = None
 		try:
 			chat_room = Room.objects.get(room_name=room)
@@ -204,6 +204,7 @@ class ChatRoomConsumer(AsyncConsumer):
 		room_subscription = RoomSubscription.objects.filter(chat_user__id=chat_user.id, room=chat_room.id)
 		if len(room_subscription) > 0:
 			rs = room_subscription[0]
+			print(rs)
 			if rs.active == False:
 				rs.active == True
 				rs.save(update_fields=['active'])
@@ -212,11 +213,13 @@ class ChatRoomConsumer(AsyncConsumer):
 
 	@database_sync_to_async
 	def leave_chatroom(self, chat_user, room):
+		print(f"Disconnecting {chat_user.chat_name} from {room}")
 		chat_room = [r for r in Room.objects.all() if r.chat_room == room]
 		chat_room = chat_room[0]
 		room_subscription = RoomSubscription.objects.filter(chat_user=chat_user, room=chat_room)
 		if room_subscription.exists():
 			rs = room_subscription[0]
+			print(rs)
 			if rs.active == True:
 				rs.active == False
 				rs.save(update_fields=['active'])
@@ -233,7 +236,7 @@ class ChatRoomConsumer(AsyncConsumer):
 
 	@database_sync_to_async
 	def get_current_user_count(self):
-		chat_room = [r for r in Room.objects.all() if r.chat_room == chat_room]
+		chat_room = [r for r in Room.objects.all() if r.chat_room == self.chat_room]
 		chat_room = chat_room[0]
 
 		return len(RoomSubscription.objects.filter(room=chat_room, active=True))
