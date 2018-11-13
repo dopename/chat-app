@@ -41,7 +41,7 @@ class Chatroom(View, WebsocketChecker, LoginRequiredMixin):
 		messages = None
 
 		try:
-			print("****************\n\n" + request.session + "\n\n*******************\n\n")
+			print("\n\n****************\n\n" + request.session + "\n\n*****************\n\n")
 		except:
 			pass
 
@@ -51,11 +51,13 @@ class Chatroom(View, WebsocketChecker, LoginRequiredMixin):
 		except:
 			print('sucks')
 
+		room_users = len(RoomSubscription.objects.filter(room__room_name=room, active=True))
+
 		async_to_sync(channel_layer.group_send)(
 			GLOBAL_ROOM_NAME,
 			{
 				'type':GLOBAL_USER_JOINED_ROOM,
-				'text':{'room':room, 'user':request.user.chat_user.chat_name}
+				'text':{'chatroom_user_count_update':{'room':room, 'user':request.user.chat_user.chat_name, 'user_count':room_users}}
 			}
 		)
 
@@ -80,7 +82,7 @@ def user_login(request):
 					GLOBAL_ROOM_NAME,
 					{
 						'type':GLOBAL_USER_LOGGED_IN,
-						'text':{'user':chat_user.chat_name}
+						'text':{'user_logged_in':chat_user.chat_name}
 					}
 				)
 				return HttpResponseRedirect('/')

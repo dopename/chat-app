@@ -4,114 +4,117 @@
 	<head>
 	<meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-      <title>NicksChat</title>
-      <!-- <link rel="shortcut icon" type="image/x-icon" href="/media/aoclogo.ico" /> -->
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      {% load static %}
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-      
-      <link href="https://fonts.googleapis.com/css?family=Mina|Oswald|Roboto+Condensed|Quicksand" rel="stylesheet">
-      <!-- <link href="{% static 'home/css/home.css' %}" rel="stylesheet"> -->
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<title>NicksChat</title>
+	<!-- <link rel="shortcut icon" type="image/x-icon" href="/media/aoclogo.ico" /> -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	{% load static %}
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	
+	<link href="https://fonts.googleapis.com/css?family=Mina|Oswald|Roboto+Condensed|Quicksand" rel="stylesheet">
+	<!-- <link href="{% static 'home/css/home.css' %}" rel="stylesheet"> -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-      <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-      <style>
-            ul {
-                  list-style:none;  
-            }
-            ::-webkit-scrollbar {
-                width: 8px;
-            }
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<style>
+		ul {
+			list-style:none;  
+		}
+		::-webkit-scrollbar {
+		    width: 8px;
+		}
 
-            /* Track */
-            ::-webkit-scrollbar-track {
-                background: #f1f1f1; 
-            }
-             
-            /* Handle */
-            ::-webkit-scrollbar-thumb {
-                background: #888; 
-            }
+		/* Track */
+		::-webkit-scrollbar-track {
+		    background: #f1f1f1; 
+		}
+		 
+		/* Handle */
+		::-webkit-scrollbar-thumb {
+		    background: #888; 
+		}
 
-            /* Handle on hover */
-            ::-webkit-scrollbar-thumb:hover {
-                background: #555; 
-            }
-      </style>
+		/* Handle on hover */
+		::-webkit-scrollbar-thumb:hover {
+		    background: #555; 
+		}
+	</style>
 	</head>
 	<body>
-            {% if request.user.is_authenticated %}
-                  <script>
+		<script>
+			var onlineUsers = document.getElementById('online-users');
 
-                        var openWebsocketConnection = () => {
-                              var loc = window.location
+			var openWebsocketConnection = () => {
+				var loc = window.location
 
-                              var wsStart = "ws://"
-                              if (loc.protocol == 'https:') {
-                                    wsStart = 'wss://'
-                              }
+				var wsStart = "ws://"
+				if (loc.protocol == 'https:') {
+					wsStart = 'wss://'
+				}
 
-                              var endpoint = wsStart + window.location.host + '/logged_in/';
-                              
-                              var socket = new WebSocket(endpoint)
+				var endpoint = wsStart + window.location.host + '/logged_in/';
+					
+				var socket = new WebSocket(endpoint)
 
-                              return socket
-                        }
+				return socket
+			}
 
-                        var websocketManagment = () => {
-                              var socket = openWebsocketConnection()
+			var websocketManagment = () => {
+				var socket = openWebsocketConnection()
 
-                              socket.onmessage = (e) => {
-                                    console.log("message", e);
-                                    var onlineUsers = document.getElementById('online-users');
+				socket.onmessage = (e) => {
+					console.log("message", e);
 
-                                    var parsedData = JSON.parse(e.data);
-                                    var responseKeys = Object.keys(parsedData);
-                                    console.log(responseKeys)
+					var parsedData = JSON.parse(e.data);
+					var responseKeys = Object.keys(parsedData);
+					console.log(responseKeys)
 
-                                    if (parsedData.users !== undefined) {
-                                          updateDiv.innerHTML = parsedData.users;
-                                    }
-                                    if (parsedData.channel !== undefined) {
-                                          var updateKey = Object.keys(parsedData.channel)[0]
-                                          var toUpdate = document.getElementById('badge_' + updateKey);
-                                          console.log(updateKey, parsedData.channel[updateKey])
-                                    
-                                          toUpdate.innerHTML = parsedData.channel[updateKey];
-                                    }
-                              }
-                              socket.onopen = (e) => {
-                                    console.log("open", e)
-                              }
+					if (responseKeys.indexOf('global_user_count_update') > -1) {
+						updateDiv.innerHTML = parsedData.global_user_count_update.total_users;
+					}
+					if (responseKeys.indexOf('chatroom_user_count_update') > -1) {
+						var updateKey = parsedData.chatroom_user_count_update.room
+						var toUpdate = document.getElementById('badge_' + updateKey);
+						console.log(updateKey, parsedData.chatroom_user_count_update.user_count)
+						
+						toUpdate.innerHTML = parsedData.chatroom_user_count_update.user_count;
+					}
+					if (responseKeys.indexOf('user_logged_in') > -1) {
+						return null
+					}
+				}
+				socket.onopen = (e) => {
+					console.log("open", e)
+				}
 
-                              socket.onerror = (e) => {
-                                    console.log("error", e)
-                              }
-                              socket.onclose = (e) => {
-                                    console.log("close", e)
-                              }
+				socket.onerror = (e) => {
+					console.log("error", e)
+				}
 
-                        }
+				socket.onclose = (e) => {
+					console.log("close", e)
+				}
 
-                        websocketManagment()
+			}
 
-                  </script>
-            {% endif %}
+			websocketManagment()
 
-            <div class='d-flex flex-row'>
-                  <a href="/" class="mr-auto text-primary"><i class="fa fa-home"></i></a>
-                  {% if request.user.is_authenticated %}
-                        <p class='ml-auto mr-2'>Welcome back {{request.user.username}}</p>
-                  {% else %}
-                        <a class='ml-auto mr-2' href='/login'>Login</a>
-                  {% endif %}
-            </div>
-            <div class=text-center">
-                  <h3>Total users online: <span class="badge badge-success" id="online-users">0</span></h3>
-            </div>
+			</script>
+		{% endif %}
+
+		<div class='d-flex flex-row'>
+			<a href="/" class="mr-auto text-primary"><i class="fa fa-home"></i></a>
+			{% if request.user.is_authenticated %}
+				<p class='ml-auto mr-2'>Welcome back {{request.user.username}}</p>
+			{% else %}
+				<a class='ml-auto mr-2' href='/login'>Login</a>
+			{% endif %}
+		</div>
+		<div class=text-center">
+			<h3>Total users online: <span class="badge badge-success" id="online-users">0</span></h3>
+		</div>
 		{% block content %}
 		{% endblock %}
 		{% block script %}
