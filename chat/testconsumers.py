@@ -58,7 +58,7 @@ class GlobalWebsocket(AsyncConsumer):
 
 	@database_sync_to_async
 	def accept_and_create_channel(self):
-		WebsocketClient.create(session_id=self.channel_name, room_name=GLOBAL_ROOM_NAME)
+		WebsocketClient.objects.create(session_id=self.channel_name, room_name=GLOBAL_ROOM_NAME)
 
 		await self.channel_layer.group_add( #add global room name to channel layer
 			GLOBAL_ROOM_NAME, 
