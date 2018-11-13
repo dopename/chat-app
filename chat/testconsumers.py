@@ -18,6 +18,13 @@ class GlobalWebsocket(AsyncConsumer):
 		if not await self.check_if_active():
 			await self.accept_and_create_channel()
 
+			try:
+				print(self.scope['session']['session_key'])
+				print(self.scope['session'].session_key)
+				print(self.scope['session'])
+			except:
+				print("can't access session")
+
 			await self.channel_layer.group_add( #add global room name to channel layer
 				GLOBAL_ROOM_NAME, 
 				self.channel_name
