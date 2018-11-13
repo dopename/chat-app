@@ -211,7 +211,7 @@ class ChatRoomConsumer(AsyncConsumer):
 
 	@database_sync_to_async
 	def leave_chatroom(self, chat_user, room):
-		chat_room = [r for r in Room.objects.all() if r.chat_room == chat_room]
+		chat_room = [r for r in Room.objects.all() if r.chat_room == room]
 		chat_room = chat_room[0]
 		room_subscription = RoomSubscription.objects.filter(chat_user=chat_user, room=chat_room)
 		if room_subscription.exists():
