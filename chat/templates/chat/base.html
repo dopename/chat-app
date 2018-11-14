@@ -62,7 +62,10 @@
 			document.onload = () => {
 				if (window.location.pathname === "" || "/") {
 					let url = "/home"
-					$('#page-display').load(url)
+					fetch(url)
+					.then(response => {
+						document.getElementById('page-display').innerHTML = response
+					})
 				}
 			}
 		</script>
