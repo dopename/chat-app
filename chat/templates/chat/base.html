@@ -64,7 +64,8 @@
 					let url = "/home"
 					fetch(url)
 					.then(response => {
-						document.getElementById('page-display').innerHTML = response
+						document.getElementById('page-display').innerHTML = response;
+						console.log('loaded')
 					})
 				}
 			}
