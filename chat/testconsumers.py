@@ -54,6 +54,7 @@ class GlobalWebsocket(AsyncConsumer):
 		if event == 'diconnect':
 			await self.websocket_disconnect(event)
 		
+		print(event)		
 
 		await self.channel_layer.group_send(
 				GLOBAL_ROOM_NAME,
