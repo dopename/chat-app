@@ -63,6 +63,9 @@ var websocketManagment = (url_suffix, type) => {
 
 	socket.onopen = (e) => {
 		console.log("open", e)
+		socket.send({
+			'websocket.disconnect'
+		})
 	}
 
 	socket.onerror = (e) => {
@@ -72,5 +75,7 @@ var websocketManagment = (url_suffix, type) => {
 	socket.onclose = (e) => {
 		console.log("close", e)
 	}
+
+	return socket
 
 }
