@@ -59,7 +59,7 @@
 
 		<script>
 			console.log(window.location)
-			document.onload = function() {
+			window.addEventListener('load', function(){
 				if (window.location.pathname === "/") {
 					let url = "/home"
 					fetch(url)
