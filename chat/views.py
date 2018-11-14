@@ -48,7 +48,7 @@ class Chatroom(View, LoginRequiredMixin):
 			}
 		)
 
-		return render(request, self.template_name, {'room':room, 'messages':messages, 'active_session':self.check_session_id_active(request.session.session_key)})
+		return render(request, self.template_name, {'room':room, 'messages':messages})
 
 
 def user_login(request):
