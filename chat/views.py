@@ -14,7 +14,7 @@ channel_layer = get_channel_layer()
 
 def home_page(request):
 	available_rooms = Room.objects.all()
-	return render(request, self.template_name, {'rooms':available_rooms})
+	return render(request, 'chat/index.html', {'rooms':available_rooms})
 
 
 class Base(View):
