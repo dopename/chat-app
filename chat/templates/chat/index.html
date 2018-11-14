@@ -18,9 +18,9 @@
 			</div>
 			<div class="col-md-6 text-center">
 				<p class="lead">Join an existing room</p>
-				<select class="form-control">
+				<select class="form-control" id='chat-chooser'>
 					{% for room in rooms %}
-						<option value="{{room.room_name}}" class='d-flex flex-row' id='chat-chooser'>
+						<option value="{{room.room_name}}" class='d-flex flex-row'>
 							<p class='lead mb-0'>{{room.room_name}}</p>
 							<span id='badge_{{room.room_name}}' class='ml-auto badge badge-primary'>0</span>
 						</option>
