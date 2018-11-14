@@ -64,7 +64,10 @@ var websocketManagment = (url_suffix, type) => {
 	socket.onopen = (e) => {
 		console.log("open", e)
 		socket.send(
-			'websocket.disconnect'
+			'global.user.logged.in',
+			{
+				text:"something"
+			}
 		)
 	}
 
