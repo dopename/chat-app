@@ -67,6 +67,9 @@
 						document.getElementById('page-display').innerHTML = response;
 						console.log('loaded')
 					})
+					.catch((error) => {
+						console.warn(error);
+					})
 				}
 			}
 		</script>
