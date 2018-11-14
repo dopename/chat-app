@@ -16,7 +16,6 @@ from .definitions import *
 USER_MAPPINGS = {}
 
 
-
 class GlobalWebsocket(AsyncConsumer):
 	async def websocket_connect(self, event):
 
