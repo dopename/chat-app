@@ -60,7 +60,7 @@
 		<script>
 			console.log(window.location)
 			document.onload = function() {
-				if (window.location.pathname === "" || "/") {
+				if (window.location.pathname === "/") {
 					let url = "/home"
 					fetch(url)
 					.then(response => {
