@@ -34,6 +34,7 @@ var openWebsocketConnection = (url_suffix) => {
 }
 
 var websocketManagment = (url_suffix, type) => {
+	console.log(url_suffix, type);
 	var socket = openWebsocketConnection(url_suffix)
 
 	socket.onmessage = (e) => {
