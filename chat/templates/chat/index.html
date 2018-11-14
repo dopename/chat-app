@@ -1,35 +1,42 @@
-{% extends 'chat/base.html' %}
-
-{% block content %}
 <div class="container">
 	<script>
 		function createroom() {
 			var roomname = $('#create-room').val();
 			console.log(roomname)
 			var getLink = '/chat/' + roomname;
-			window.location.replace(getLink)
+			$('#page-display').load(url + selectedOption)
 		}
 
 	</script>
-	<h1 class="text-center">Welcome!</h1>
-	<div class="row">
-		<div class="col-md-6 text-center">
-				<p class="lead">Create a new room</p>
-				<input type="text" name="chat-textbox" id='create-room' class="form-control" />
-				<button class='btn btn-lg btn-success my-2' onclick='createroom()'>Create</button>
-		</div>
-		<div class="col-md-6 text-center">
-			<p class="lead">Join an existing room</p>
-			<div class='d-flex flex-row flex-wrap'>
-				{% for room in rooms %}
-					<div class='col-md-4 my-2 d-flex flex-column'>
-						<p class='lead mb-0'>{{room.room_name}}</p>
-						<span id='badge_{{room.room_name}}' style="width:10%;" class='my-2 mx-auto badge badge-primary'>0</span>
-						<a href="/chat/{{room.room_name}}"><button class='btn btn-success'>Join</button></a>
-					</div>
-				{% endfor %}
+		<script>
+			function grabChatroom() {
+				var url = '/chat/'
+				var selectBox = document.getElementById('chat-chooser')
+				var selectedOption = selectBox.options[selectBox.selectedIndex].value
+
+				$('#page-display').load(url + selectedOption)
+			}
+		</script>
+	<div>
+		<h1 class="text-center">Welcome!</h1>
+		<div class="row">
+			<div class="col-md-6 text-center">
+					<p class="lead">Create a new room</p>
+					<input type="text" name="chat-textbox" id='create-room' class="form-control" />
+					<button class='btn btn-lg btn-success my-2' onclick='createroom()'>Create</button>
+			</div>
+			<div class="col-md-6 text-center">
+				<p class="lead">Join an existing room</p>
+				<select class="form-control">
+					{% for room in rooms %}
+						<option value="{{room.room_name}}" class='d-flex flex-row' id='chat-chooser'>
+							<p class='lead mb-0'>{{room.room_name}}</p>
+							<span id='badge_{{room.room_name}}' class='ml-auto badge badge-primary'>0</span>
+						</option>
+					{% endfor %}
+				</select>
+				<button onclick='grabChatroom()' class='btn btn-success'>Join Room</button>
 			</div>
 		</div>
 	</div>
 </div>
-{% endblock %}

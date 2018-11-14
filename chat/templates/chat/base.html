@@ -43,7 +43,28 @@
 	</style>
 	</head>
 	<body>
-	
+		<div class='d-flex flex-row'>
+			<a href="/" class="mr-auto text-primary"><i class="fa fa-home"></i></a>
+			{% if request.user.is_authenticated %}
+				<p class='ml-auto mr-2'>Welcome back {{request.user.username}}</p>
+			{% else %}
+				<a class='ml-auto mr-2' href='/login'>Login</a>
+			{% endif %}
+		</div>
+		<div class=text-center">
+			<h3>Total users online: <span class="badge badge-success" id="online-users">0</span></h3>
+		</div>
+		<div id="page-display">
+		</div>
+
+		<script>
+			document.onload = () => {
+				if (window.location.pathname === "" || "/") {
+					let url = "/home"
+					$('#page-display').load(url)
+				}
+			}
+		</script>
 		<script>
 			var openWebsocketConnection = () => {
 				var loc = window.location
@@ -104,22 +125,5 @@
 			websocketManagment()
 
 		</script>
-
-
-		<div class='d-flex flex-row'>
-			<a href="/" class="mr-auto text-primary"><i class="fa fa-home"></i></a>
-			{% if request.user.is_authenticated %}
-				<p class='ml-auto mr-2'>Welcome back {{request.user.username}}</p>
-			{% else %}
-				<a class='ml-auto mr-2' href='/login'>Login</a>
-			{% endif %}
-		</div>
-		<div class=text-center">
-			<h3>Total users online: <span class="badge badge-success" id="online-users">0</span></h3>
-		</div>
-		{% block content %}
-		{% endblock %}
-		{% block script %}
-		{% endblock %}
 	</body>
 </html>

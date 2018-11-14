@@ -12,38 +12,25 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 channel_layer = get_channel_layer()
 
-class WebsocketChecker:
-
-	def __init__(self):
-		self.session_id = None
-
-	# def set_session_id(self, session_id):
-	# 	self.session_id = session_id
-
-	def check_session_id_active(self, session_id):
-		return WebsocketClient.objects.filter(session_id=session_id).exists()
+def home_page(request):
+	available_rooms = Room.objects.all()
+	return render(request, self.template_name, {'rooms':available_rooms})
 
 
-class Home(View, WebsocketChecker):
-	template_name = 'chat/index.html'
+class Base(View):
+	template_name = 'chat/base.html'
 
 	def get(self, request, *args, **kwargs):
-		available_rooms = Room.objects.all()
-		return render(request, self.template_name, {'rooms':available_rooms, 'active_session':self.check_session_id_active(request.session.session_key)})
+		return render(request, self.template_name)
 
 
-class Chatroom(View, WebsocketChecker, LoginRequiredMixin):
+class Chatroom(View, LoginRequiredMixin):
 	template_name = 'chat/chat.html'
 	login_url = '/login/'
 
 	def get(self, request, room, *args, **kwargs):
 		chat_room = None
 		messages = None
-
-		try:
-			print("\n\n****************\n\n" + request.session + "\n\n*****************\n\n")
-		except:
-			pass
 
 		try:
 			chat_room = Room.objects.get(room_name=room)
