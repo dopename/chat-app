@@ -33,14 +33,7 @@
 	</div>
 </div>
 <script>
-	var scrollWindow = () => {
-		var windowHeightPx = (window.screen.height * 0.50).toString() + "px";
-		var chatBox = document.getElementById('chat-window')
-		chatBox.style.height = windowHeightPx;
-		chatBox.scrollTop = chatBox.scrollHeight;
-	}
-
-	scrollWindow();
+	scrollWindow('chat-window');
 </script>
 
 <!-- 	<script>

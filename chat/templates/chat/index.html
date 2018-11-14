@@ -26,22 +26,8 @@
 						</option>
 					{% endfor %}
 				</select>
-				<button onclick='grabChatroom()' class='btn btn-success'>Join Room</button>
+				<button onclick="grabChatroom('chat-chooser', 'page-display')" class='btn btn-success'>Join Room</button>
 			</div>
 		</div>
 	</div>
-	<script>
-		function grabChatroom() {
-			var url = '/chat/'
-			var selectBox = document.getElementById('chat-chooser')
-			var selectedOption = selectBox.options[selectBox.selectedIndex].value
-
-			fetch(url + selectedOption)
-			.then(response => response.text())
-			.then(html => {
-				document.getElementById('page-display').innerHTML = html
-			})
-
-		}
-	</script>
 </div>
