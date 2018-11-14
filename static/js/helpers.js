@@ -6,7 +6,7 @@ function scrollWindow(div) {
 }
 
 function grabChatroom(select, display) {
-	console.log(select, display)
+	//console.log(select, display)
 	var url = '/chat/'
 	var selectBox = document.getElementById(select)
 	var selectedOption = selectBox.options[selectBox.selectedIndex].value
