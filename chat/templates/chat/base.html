@@ -65,7 +65,7 @@
 					fetch(url)
 					.then(response => {
 						document.getElementById('page-display').innerHTML = response;
-						console.log('loaded')
+						console.log(response)
 					})
 					.catch((error) => {
 						console.warn(error);
