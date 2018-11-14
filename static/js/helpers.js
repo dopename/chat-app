@@ -64,10 +64,7 @@ var websocketManagment = (url_suffix, type) => {
 	socket.onopen = (e) => {
 		console.log("open", e)
 		socket.send(
-			'global.user.logged.in',
-			{
-				text:"something"
-			}
+			{something:'global.user.logged.in'}
 		)
 	}
 
