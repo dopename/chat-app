@@ -50,6 +50,15 @@ class GlobalWebsocket(AsyncConsumer):
 			}
 		)
 
+	async def websocket_receive(self, event):
+		await self.channel_layer.group_send(
+				GLOBAL_ROOM_NAME,
+				{
+					'type':GLOBAL_USER_LOGGED_IN,
+					'text':event
+				}
+			)
+
 	async def websocket_disconnect(self, event):
 		await self.channel_layer.group_send(
 			GLOBAL_ROOM_NAME,
